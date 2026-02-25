@@ -1,24 +1,7 @@
-# README
+This is your class repo for a Lab.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+You should create and assign issues in this repository for each task, and mark them completed as appropriate.  I will be monitoring the assignment of issues, and completion of tasks in considering your grades.
 
-Things you may want to cover:
+When a lab is finished, tag it Release 1.0.  IF you need to update after that, tag that as Release 1.1, etc.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+For lab-3, start by copying all of lab-2 work into the lab-3 repository, and save that as a new commit.
