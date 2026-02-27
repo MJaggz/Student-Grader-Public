@@ -1,0 +1,28 @@
+<h1>CSE Courses System</h1>
+<p>Welcome to the OSU CSE Department course and grader matching portal.</p>
+
+<hr>
+
+<% if user_signed_in? %>
+  <h3>Welcome, <%= current_user.email %>!</h3>
+  <p>You are logged in as a <strong><%= current_user.role.capitalize %></strong>.</p>
+
+  <div class="actions">
+    
+    <% if current_user.admin? %>
+      <%= link_to "Admin: Manage Users", users_list_path, class: "button admin" %>
+    <% end %>
+
+    <%= link_to "Edit Profile/Password", edit_user_registration_path, class: "button" %>
+    <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "button logout" %>
+  </div>
+
+<% else %>
+  <h3>Get Started</h3>
+  <p>Please log in or create an account to view available CSE courses.</p>
+  
+  <div class="auth-links">
+    <%= link_to "Login", new_user_session_path, class: "button" %>
+    <%= link_to "Sign Up (Register)", new_user_registration_path, class: "button" %>
+  </div>
+<% end %>

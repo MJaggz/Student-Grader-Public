@@ -6,4 +6,9 @@ class User < ApplicationRecord
 
   validates :email, format: { with: /\A[a-zA-Z]+\.\d+@osu\.edu\z/,
                               message: "must be in name.#@osu.edu format" }
+ private
+
+  def approve_students
+    self.approved = true if self.student?
+  end
 end
