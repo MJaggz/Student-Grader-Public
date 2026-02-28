@@ -10,7 +10,7 @@
   <div class="actions">
     
     <% if current_user.admin? %>
-      <%= link_to "Admin: Manage Users", users_list_path, class: "button admin" %>
+<%= link_to "User Management", users_path, class: "button admin" %>
     <% end %>
 
     <%= link_to "Edit Profile/Password", edit_user_registration_path, class: "button" %>
