@@ -1,10 +1,210 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* =======================================
+   Base Reset
+======================================= */
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f6f9;
+}
+
+/* =======================================
+   Layout Structure
+======================================= */
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* =======================================
+   Sidebar
+======================================= */
+
+.sidebar {
+  width: 220px;
+  background-color: #1f2937;
+  color: white;
+  padding: 1.5rem 1rem;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar a {
+  display: block;
+  color: #d1d5db;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.sidebar a:hover {
+  color: white;
+}
+
+/* =======================================
+   Main Content Area
+======================================= */
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =======================================
+   Top Navbar
+======================================= */
+
+.navbar {
+  background: white;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =======================================
+   Content Section
+======================================= */
+
+.content {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* =======================================
+   Cards
+======================================= */
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+}
+
+/* =======================================
+   Buttons
+======================================= */
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #1e4ed8;
+}
+
+/* Action button container */
+.actions {
+  display: flex;
+  gap: 12px;          /* spacing between buttons */
+  flex-wrap: wrap;    /* allows wrap if screen is small */
+  margin-top: 1rem;
+}
+
+.button.module {
+  background-color: #004a56
+}
+
+/* Make button_to forms not break layout */
+.actions form {
+  margin: 0;
+}
+
+/* Unified button styling */
+.button,
+.actions form button {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Hover effect */
+.button:hover,
+.actions form button:hover {
+  background-color: #1e40af;
+}
+
+/* =======================================
+   Flash Stying
+======================================= */
+
+/* Base flash styling */
+.flash {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Success / Notice */
+.flash.notice {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+  border-left: 5px solid #1e7e34;
+}
+
+/* Error / Alert */
+.flash.alert {
+  background-color: #fdecea;
+  color: #b02a37;
+  border-left: 5px solid #b02a37;
+}
+
+/* Optional additional types */
+.flash.success {
+  background-color: #e0f2ff;
+  color: #084298;
+}
+
+.flash.error {
+  background-color: #fdecea;
+  color: #842029;
+}
+
+/* =======================================
+   Tables
+======================================= */
+
+/* Table styling */
+table {
+  width: 75%;
+  border-collapse: collapse;   
+  margin-top: 1.5rem;
+}
+
+th, td {
+  padding: 5px 5px;          
+  text-align: left;
+}
+
+th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f9fafb;   /* subtle row striping */
+}
+
+tr:hover {
+  background-color: #eef2ff;
+}

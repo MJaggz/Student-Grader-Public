@@ -1,28 +1,60 @@
-<h1>CSE Courses System</h1>
-<p>Welcome to the OSU CSE Department course and grader matching portal.</p>
+<% unless user_signed_in? %>
+  <div class="card">
+    <h1>CSE Course System @ OSU</h1>
+    <p>Welcome to the OSU CSE Department course and grader matching portal.</p>
+  </div>
+<% end %>
 
 <hr>
 
 <% if user_signed_in? %>
-  <h3>Welcome, <%= current_user.email %>!</h3>
-  <p>You are logged in as a <strong><%= current_user.role.capitalize %></strong>.</p>
+  <div class="card">
+    <h3>Welcome, <%= current_user.email %>!</h3>
+    <p>
+      You are logged in as a
+      <strong><%= current_user.role.capitalize %></strong>.
+    </p>
 
-  <div class="actions">
-    
-    <% if current_user.admin? %>
-<%= link_to "User Management", users_path, class: "button admin" %>
-    <% end %>
-
-    <%= link_to "Edit Profile/Password", edit_user_registration_path, class: "button" %>
-    <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "button logout" %>
+    <div class="actions">
+      <%= link_to "Notifications", edit_user_registration_path, class: "button" %><!-- UPDATE -->
+      <%= link_to "Settings", edit_user_registration_path, class: "button" %>
+      <%= button_to "Logout",
+            destroy_user_session_path,
+            method: :delete,
+            class: "button logout" %>
+    </div>
   </div>
 
+  <hr>
 <% else %>
-  <h3>Get Started</h3>
-  <p>Please log in or create an account to view available CSE courses.</p>
-  
-  <div class="auth-links">
-    <%= link_to "Login", new_user_session_path, class: "button" %>
-    <%= link_to "Sign Up (Register)", new_user_registration_path, class: "button" %>
+  <div class="card">
+    <h3>Get Started</h3>
+    <p>Please log in or create an account to view available CSE courses.</p>
+
+    <div class="auth-links">
+      <%= link_to "Login", new_user_session_path, class: "button" %>
+      <%= link_to "Sign Up (Register)", new_user_registration_path, class: "button" %>
+    </div>
+  </div>
+<% end %>
+
+<%= render "devise/shared/flash" %>
+
+<% if user_signed_in? && defined?(users_path) %>
+  <div class="card">
+    <h3>Modules</h3>
+    <p>
+      You have access to the following services. If you need access to something additional,
+      please apply for a different account type.
+    </p>
+
+    <div class="actions">
+      <%= link_to "View Courses", users_path, class: "button module" %>
+
+      <% if current_user.admin? %>
+        <%= link_to "User Management", users_path, class: "button module" %>
+        <%= link_to "Configure Database", users_path, class: "button module" %>
+      <% end %>
+    </div>
   </div>
 <% end %>
