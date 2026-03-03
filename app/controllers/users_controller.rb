@@ -37,7 +37,6 @@ class UsersController < ApplicationController
       options = { query: {q: "cse", client: "class-search-ui", academiccareer: "ugrad"} }
       options[:query].merge!(queries)
       courses =  JSON.parse(HTTParty.get("https://contenttest.osu.edu/v2/classes/search", options).body)["data"]["courses"]
-      sections = courses["sections"]
 
       courses.each do |course|
         Course.create(
@@ -52,8 +51,8 @@ class UsersController < ApplicationController
         title: course["course"]["title"],
         units: course["course"]["minUnits"]
       )
-      end
 
+      sections = course["sections"]
       sections.each do |section|
         days = ""
         if section["meetings"]["monday"]? days += "M " end
@@ -69,6 +68,7 @@ class UsersController < ApplicationController
           term: section["term"],
           times: "#{section["meetings"]["startTime"]} to #{section["meetings"]["endTime"]}"
         )
+      end
       end
       
     end
