@@ -21,12 +21,9 @@
           <td><%= button_to "Approve", approve_user_path(user), method: :patch, data: { turbo_confirm: "Are you sure?" }%></td>
         <% end %>
         <% if user != current_user %>
+              <td><%= button_to "Delete User", user_path(user), method: :delete, data: { turbo_confirm: "Are you sure?" }%></td>
         <% end %>
         <% end %>
-         <% if user.admin? %>
-         <% else %>
-          <td><%= button_to "Delete User", user_path(user), method: :delete, data: { turbo_confirm: "Are you sure?" }%></td>
-          <% end %>
       </tr>
        
     <% end %>

@@ -8,6 +8,9 @@ class User < ApplicationRecord
                               message: "must be in name.#@osu.edu format" }
  private
 
+ # Automatically approve student accounts upon creation
+ before_save :approve_students
+
   def approve_students
     self.approved = true if self.student?
   end

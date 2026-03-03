@@ -1,0 +1,49 @@
+<h1>CSE Courses Catalog</h1>
+<hr>
+
+<% if @courses.empty? %>
+  <p>No courses available at the moment. Please ask an Admin to sync the catalog.</p>
+<% else %>
+
+  <% if current_user.admin? %>
+    <%= button_to "Delete All Courses", destroy_all_courses_path,
+                  method: :delete,
+                  form: { data: { turbo_confirm: "Are you sure you want to wipe the entire catalog?" } },
+                  class: "button danger" %>
+  <% end %>
+
+  <table class="course-table">
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Code</th>
+        <th>Title</th>
+        <th>Term</th>
+        <th>Campus</th>
+        <th>Career</th>
+        <% if current_user.admin? %><th>Actions</th><% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @courses.each do |course| %>
+        <tr>
+          <td><strong><%= course.subject %></strong></td>
+          <td><%= course.catalog_number %></td>
+          <td><%= course.title %></td>
+          <td><%= course.term %></td>
+          <td><%= course.campus.upcase if course.campus %></td>
+          <td><small><%= course.academic_career %></small></td>
+
+          <% if current_user.admin? %>
+            <td>
+              <%= button_to "Delete", course_path(course),
+                            method: :delete,
+                            form: { data: { turbo_confirm: "Delete this course?" } },
+                            class: "button danger" %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -7,7 +7,7 @@
     <p><%= f.label :email %></p>
     <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
     <%= f.label :role %><br />
-    <%= f.select :role, User.roles.keys { |r| [r.humanize, r] } %>  </div>
+    <%= f.select :role, User.roles.keys.map { |r| [r.humanize, r] } %>  </div>
 
   <div class="field">
     <p><%= f.label :password %></p>
