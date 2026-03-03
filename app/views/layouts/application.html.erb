@@ -38,7 +38,7 @@
 
         <% if user_signed_in? %>
          <%= link_to "Notifications", users_path if defined?(users_path) %> <!-- NEEDS UPDATED -->
-         <%= link_to "View Courses", users_path if defined?(users_path) %> <!-- NEEDS UPDATED -->
+         <%= link_to "View Courses", courses_path if defined?(courses_path) %> <!-- NEEDS UPDATED -->
         <% if user_signed_in? && current_user.admin? %>
           <%= link_to "User Management", users_path if defined?(users_path) %>
           <%= link_to "Configure Database", users_path if defined?(users_path) %> <!-- NEEDS UPDATED -->

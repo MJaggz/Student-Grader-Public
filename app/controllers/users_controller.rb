@@ -30,7 +30,6 @@ class UsersController < ApplicationController
       redirect_to users_list_path, alert: "Failed to delete user."
     end
   end
-
   def fetch_course_data(queries)
     @user = User.find(params[:id])
     if @user.admin?
@@ -55,11 +54,25 @@ class UsersController < ApplicationController
       sections = course["sections"]
       sections.each do |section|
         days = ""
-        if section["meetings"]["monday"]? days += "M " end
-        if section["meetings"]["tuesday"]? days += "T " end
-        if section["meetings"]["wednesday"]? days += "W " end
-        if section["meetings"]["thursday"]? days += "R " end
-        if section["meetings"]["friday"]? days += "F" end
+      if section["meetings"]["monday"]
+        days += "M "
+      end
+
+      if section["meetings"]["tuesday"]
+        days += "T "
+      end
+
+      if section["meetings"]["wednesday"]
+        days += "W "
+      end
+
+      if section["meetings"]["thursday"]
+        days += "R "
+      end
+
+      if section["meetings"]["friday"]
+        days += "F"
+      end
 
         Section.create(
           class_number: section["classNumber"],
@@ -70,6 +83,6 @@ class UsersController < ApplicationController
         )
       end
       end
-      
+    end
     end
 end
