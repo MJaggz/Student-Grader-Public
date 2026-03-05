@@ -3,6 +3,13 @@
 
 <% if @courses.empty? %>
   <p>No courses available at the moment. Please ask an Admin to sync the catalog.</p>
+
+  <br/>
+  <%= button_to "Fetch Courses From Api", fetch_courses_path,
+                  method: :post,
+                  form: { data: { turbo_confirm: "Are you sure you want to fetch courses from the API?" } },
+                  class: "button danger" %> 
+
 <% else %>
 
   <% if current_user.admin? %>
