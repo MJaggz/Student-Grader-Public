@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root "home#index"
   post "fetch_courses", to: "courses#fetch_courses", as: "fetch_courses"
+  post "update_courses", to: "courses#update_courses", as: "update_courses"
   delete "destroy_all_courses", to: "courses#destroy_all_courses", as: "destroy_all_courses"
 
   # RESTful Users Routes

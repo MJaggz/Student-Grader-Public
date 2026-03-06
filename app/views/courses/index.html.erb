@@ -13,10 +13,16 @@
 <% else %>
 
   <% if current_user.admin? %>
-    <%= button_to "Delete All Courses", destroy_all_courses_path,
-                  method: :delete,
-                  form: { data: { turbo_confirm: "Are you sure you want to wipe the entire catalog?" } },
-                  class: "button danger" %>
+    <div class="actions">
+      <%= button_to "Update Courses", update_courses_path,
+                    method: :post,
+                    form: { data: { turbo_confirm: "Fetch latest course data from the API and sync the catalog?" } },
+                    class: "button" %>
+      <%= button_to "Delete All Courses", destroy_all_courses_path,
+                    method: :delete,
+                    form: { data: { turbo_confirm: "Are you sure you want to wipe the entire catalog?" } },
+                    class: "button danger" %>
+    </div>
   <% end %>
 
   <table class="course-table">
