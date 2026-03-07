@@ -35,7 +35,7 @@ end
 
 # Gets course data from API and saves it to the database
 def fetch_course_data(queries)
-  options = { query: {q: "cse", client: "class-search-ui", academiccareer: "UGRAD", term: "1268", campus: "col"} }
+  options = { query: {:'q'=> 'cse', :'client'=> 'class-search-ui', :'academic-career' => 'ugrd', :'term' => '1268', :'campus' => 'col'} }
   options[:query].merge!(queries)
   courses =  JSON.parse(HTTParty.get("https://contenttest.osu.edu/v2/classes/search", options).body)["data"]["courses"]
 
@@ -105,11 +105,11 @@ end
 def fetch_api_courses(queries)
   options = {
     query: {
-      q: "cse",
-      client: "class-search-ui",
-      academiccareer: "UGRAD",
-      term: "1268",
-      campus: "col"
+      :'q'=> 'cse',
+      :'client'=> 'class-search-ui',
+      :'academic-career' => 'ugrd',
+      :'term' => '1268',
+      :'campus' => 'col'
     }
   }
   options[:query].merge!(queries)
