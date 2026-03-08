@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     # Permit :role for the sign_up action
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :role ])
     # Permit :role for updating the account
-    devise_parameter_sanitizer.permit(:account_update, keys: [:role])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :role ])
   end
 end

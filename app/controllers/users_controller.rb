@@ -1,7 +1,7 @@
-require 'httparty'
+require "httparty"
 
 class UsersController < ApplicationController
-  before_action :only_admins, only: [:index, :approve, :destroy]
+  before_action :only_admins, only: [ :index, :approve, :destroy ]
 
   include HTTParty
 
