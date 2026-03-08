@@ -75,7 +75,6 @@ body {
 
 .content {
   padding: 2rem;
-  overflow-y: auto;
 }
 
 /* =======================================
@@ -207,4 +206,51 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #eef2ff;
+}
+
+/* =======================================
+   Filters
+======================================= */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: end;
+  margin-top: 1rem;
+}
+
+.filters div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.filters label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+/* Dropdown styling */
+.filters select {
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  font-size: 14px;
+  min-width: 160px;
+}
+
+/* Focus effect */
+.filters select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* Filter buttons spacing */
+.filters .button {
+  margin-top: 6px;
 }

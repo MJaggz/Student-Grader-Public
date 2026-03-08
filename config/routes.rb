@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   # RESTful Users Routes
   # 'index' handles viewing the list (GET /users)
   # 'destroy' handles deleting a user (DELETE /users/:id)
-  resources :users, only: [:index, :destroy] do
+  resources :users, only: [ :index, :destroy ] do
     member do
-      patch :approve 
+      patch :approve
     end
   end
 
@@ -19,4 +19,6 @@ Rails.application.routes.draw do
 
   # Health & PWA
   get "up" => "rails/health#show", as: :rails_health_check
+  # Notifications page
+  get "notifications", to: "notifications#index"
 end

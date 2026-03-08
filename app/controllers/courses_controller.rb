@@ -1,10 +1,19 @@
 # app/controllers/courses_controller.rb
 class CoursesController < ApplicationController
   before_action :authenticate_user!
-  before_action :only_admins, only: [:destroy, :fetch_courses, :destroy_all_courses, :update_courses]
+  before_action :only_admins, only: [ :destroy, :fetch_courses, :destroy_all_courses, :update_courses ]
 
 def index
+  @all_course_numbers = Course.where.not(catalog_number: nil).distinct.order(:catalog_number).pluck(:catalog_number)
+  @all_terms = Course.where.not(term: nil).distinct.order(:term).pluck(:term)
+  @all_campuses = Course.where.not(campus: nil).distinct.order(:campus).pluck(:campus)
+  @all_careers = Course.where.not(academic_career: nil).distinct.order(:academic_career).pluck(:academic_career)
+
   @courses = Course.all
+  @courses = @courses.where(catalog_number: params[:catalog_number]) if params[:catalog_number].present?
+  @courses = @courses.where(term: params[:term]) if params[:term].present?
+  @courses = @courses.where(campus: params[:campus]) if params[:campus].present?
+  @courses = @courses.where(academic_career: params[:academic_career]) if params[:academic_career].present?
 end
 
 def destroy
@@ -35,7 +44,7 @@ end
 
 # Gets course data from API and saves it to the database
 def fetch_course_data(queries)
-  options = { query: {:'q'=> 'cse', :'client'=> 'class-search-ui', :'academic-career' => 'ugrd', :'term' => '1268', :'campus' => 'col'} }
+  options = { query: { 'q': "cse", 'client': "class-search-ui", 'academic-career': "ugrd", 'term': "1268", 'campus': "col" } }
   options[:query].merge!(queries)
   courses =  JSON.parse(HTTParty.get("https://contenttest.osu.edu/v2/classes/search", options).body)["data"]["courses"]
 
@@ -65,7 +74,7 @@ def fetch_course_data(queries)
       days += "Th " if section["meetings"][0]["thursday"]
 
       days += "F" if section["meetings"][0]["friday"]
-      
+
       Section.create(
         class_number: section["classNumber"],
         course_id: Course.last.id,
@@ -75,7 +84,6 @@ def fetch_course_data(queries)
       )
     end
   end
-
 end
 
 private
@@ -105,11 +113,11 @@ end
 def fetch_api_courses(queries)
   options = {
     query: {
-      :'q'=> 'cse',
-      :'client'=> 'class-search-ui',
-      :'academic-career' => 'ugrd',
-      :'term' => '1268',
-      :'campus' => 'col'
+      'q': "cse",
+      'client': "class-search-ui",
+      'academic-career': "ugrd",
+      'term': "1268",
+      'campus': "col"
     }
   }
   options[:query].merge!(queries)
@@ -177,5 +185,4 @@ def format_times(api_section)
 
   "#{start_time} to #{end_time}"
 end
-
 end

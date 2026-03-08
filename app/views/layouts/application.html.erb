@@ -37,11 +37,12 @@
         <%= link_to "Dashboard", root_path %>
 
         <% if user_signed_in? %>
-         <%= link_to "Notifications", users_path if defined?(users_path) %> <!-- NEEDS UPDATED -->
-         <%= link_to "View Courses", courses_path if defined?(courses_path) %> <!-- NEEDS UPDATED -->
+         <%= link_to "Notifications", notifications_path if defined?(notifications_path) %> 
         <% if user_signed_in? && current_user.admin? %>
           <%= link_to "User Management", users_path if defined?(users_path) %>
-          <%= link_to "Configure Database", users_path if defined?(users_path) %> <!-- NEEDS UPDATED -->
+          <%= link_to "Configure Course Catalog", courses_path if defined?(courses_path) %> 
+        <% else%>
+          <%= link_to "View Courses", courses_path if defined?(courses_path) %>
         <% end %>
         <% end %>
 

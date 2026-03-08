@@ -1,0 +1,29 @@
+<h2>Notifications</h2>
+<div class="card">
+<table>
+  <thead>
+    <tr>
+      <th>Notification Type</th>
+      <th>Description</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if current_user.admin? %>
+    <% @users.each do |user| %>
+      <tr>
+        <% if user.approved? %>
+        <% else %>
+        <td> Oustanding User Approval </td>
+        <td> <i><%= user.email %></i> has requested approval for a new <b><%= user.role.capitalize %></b> account.</td>
+        <td><%= link_to "Manage Users", users_path, class: "button module" %></td>
+        <% end %>
+        
+      </tr>
+    <% end %> 
+    <% end %>
+
+  </tbody>
+</table>
+</div>
+<%= link_to "Back", :back %>

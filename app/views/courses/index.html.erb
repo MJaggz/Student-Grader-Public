@@ -1,8 +1,10 @@
-<h1>CSE Courses Catalog</h1>
+<h2>CSE Courses Catalog</h2>
 <hr>
 
+<div class="card">
 <% if @courses.empty? %>
-  <p>No courses available at the moment. Please ask an Admin to sync the catalog.</p>
+  <p>No courses available at the moment. </p>
+  <p>Please contact an <i>adminstrator</i> for assistance.</p>
 
   <br/>
   <%= button_to "Fetch Courses From Api", fetch_courses_path,
@@ -11,10 +13,49 @@
                   class: "button danger" %> 
 
 <% else %>
+<h3> Filters </h3>
 
-  <% if current_user.admin? %>
+  <div class="actions">
+
+<%= form_with url: courses_path, method: :get, local: true, class: "filters" do %>
+
+      <div>
+        <%= label_tag :catalog_number, "Course Number" %><br>
+        <%= select_tag :subject,
+              options_for_select([["All Course Numbers", ""]] + @all_course_numbers.map { |s| [s, s] }, params[:catalog_number]) %>
+      </div>
+
+      <div>
+        <%= label_tag :term, "Term" %><br>
+        <%= select_tag :term,
+              options_for_select([["All Terms", ""]] + @all_terms.map { |t| [t, t] }, params[:term]) %>
+      </div>
+
+      <div>
+        <%= label_tag :campus, "Campus" %><br>
+        <%= select_tag :campus,
+              options_for_select([["All Campuses", ""]] + @all_campuses.map { |c| [c.upcase, c] }, params[:campus]) %>
+      </div>
+
+      <div>
+        <%= label_tag :academic_career, "Career" %><br>
+        <%= select_tag :academic_career,
+              options_for_select([["All Careers", ""]] + @all_careers.map { |c| [c, c] }, params[:academic_career]) %>
+      </div>
+    </div>
+
+    <br>
+
+    <%= submit_tag "Apply Filters", class: "button" %>
+    <%= link_to "Clear Filters", courses_path, class: "button" %>
+<% end %>
+</div>
+ <% if current_user.admin? %> 
+<div class="card"> 
+<h3> Tools</h3>
+
     <div class="actions">
-      <%= button_to "Update Courses", update_courses_path,
+      <%= button_to "Refresh Courses", update_courses_path,
                     method: :post,
                     form: { data: { turbo_confirm: "Fetch latest course data from the API and sync the catalog?" } },
                     class: "button" %>
@@ -23,13 +64,16 @@
                     form: { data: { turbo_confirm: "Are you sure you want to wipe the entire catalog?" } },
                     class: "button danger" %>
     </div>
+  
   <% end %>
+  </div>
 
+<div class="card">
   <table class="course-table">
     <thead>
       <tr>
         <th>Subject</th>
-        <th>Code</th>
+        <th>Course Number</th>
         <th>Title</th>
         <th>Term</th>
         <th>Campus</th>
@@ -60,3 +104,4 @@
     </tbody>
   </table>
 <% end %>
+</div>
