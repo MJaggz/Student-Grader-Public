@@ -10,7 +10,6 @@
   </head>
 
   <body>
-    <%# Your CSS needs this .dashboard wrapper to make the Sidebar sit next to the Main area %>
     <div class="dashboard">
       
       <div class="sidebar">
@@ -48,20 +47,13 @@
         </div>
 
         <div class="content">
-          
-          <%# Flash Messages using your existing CSS classes %>
-          <% if notice %>
-            <div class="flash notice"><%= notice %></div>
-          <% end %>
-
-          <% if alert %>
-            <div class="flash alert"><%= alert %></div>
-          <% end %>
+        
+<%= render "devise/shared/flash" %>
 
           <%= yield %>
         </div>
       </div>
 
-    </div> <%# End of .dashboard %>
+    </div>
   </body>
 </html>
