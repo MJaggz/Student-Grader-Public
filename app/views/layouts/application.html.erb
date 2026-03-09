@@ -3,84 +3,65 @@
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Grader Manager" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Grader Manager">
-    <meta name="mobile-web-app-capable" content="yes">
-
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%# Your CSS needs this .dashboard wrapper to make the Sidebar sit next to the Main area %>
     <div class="dashboard">
-
-      <!-- Sidebar -->
+      
       <div class="sidebar">
-        <h2>CSE Course Portal</h2>
+        <h2>CSE Portal</h2>
         <% if user_signed_in? %>
-             <i> - <%= current_user.email %></i>
-            <% end %>
-            <br><br>
+          <div style="font-size: 0.75rem; color: #9ca3af; margin-bottom: 1.5rem;">
+            <%= current_user.email %>
+          </div>
+        <% end %>
 
         <%= link_to "Dashboard", root_path %>
 
         <% if user_signed_in? %>
-         <%= link_to "Notifications", notifications_path if defined?(notifications_path) %> 
-        <% if user_signed_in? && current_user.admin? %>
-          <%= link_to "User Management", users_path if defined?(users_path) %>
-          <%= link_to "Configure Course Catalog", courses_path if defined?(courses_path) %> 
-        <% else%>
-          <%= link_to "View Courses", courses_path if defined?(courses_path) %>
-        <% end %>
-        <% end %>
-
-        <%= link_to "Settings",
-              edit_user_registration_path,
-              class: "sidebar-link" if user_signed_in? && defined?(edit_user_registration_path) %>
-
-        <div style="margin-top: 25px;" class="actions">
-          <% if user_signed_in? %>
-            <%= button_to "Logout",
-                  destroy_user_session_path,
-                  method: :delete,
-                  class: "button" %>
+          <% if current_user.admin? %>
+            <%= link_to "User Management", users_path %>
+            <%= link_to "Course Catalog", courses_path %> 
           <% else %>
-            <%= link_to "Login",
-                  new_user_session_path,
-                  class: "button" %>
+            <%= link_to "View Courses", courses_path %>
+          <% end %>
+          <%= link_to "Settings", edit_user_registration_path %>
+        <% end %>
+
+        <div class="actions" style="margin-top: 2rem;">
+          <% if user_signed_in? %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "button" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "button" %>
           <% end %>
         </div>
       </div>
 
-      <!-- Main Area -->
       <div class="main">
-
-        <!-- Top Navbar -->
         <div class="navbar">
-          <div>
-            Ohio State University CSE Course System
-          </div>
+          <div>Ohio State University CSE Course System</div>
         </div>
 
-        <!-- Content -->
         <div class="content">
+          
+          <%# Flash Messages using your existing CSS classes %>
+          <% if notice %>
+            <div class="flash notice"><%= notice %></div>
+          <% end %>
+
+          <% if alert %>
+            <div class="flash alert"><%= alert %></div>
+          <% end %>
+
           <%= yield %>
         </div>
-
       </div>
-    </div>
+
+    </div> <%# End of .dashboard %>
   </body>
 </html>
