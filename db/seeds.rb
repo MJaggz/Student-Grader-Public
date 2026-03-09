@@ -8,10 +8,10 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-User.create!(
-  email: "admin.1@osu.edu",
-  password: "Password123!",
-  password_confirmation: "Password123!",
-  role: :admin,
-  approved: true
-)
+
+admin = User.find_or_create_by!(email: "admin.1@osu.edu") do |user|
+  user.password = "password123" 
+  user.password_confirmation = "password123"
+  user.role = "admin"
+  user.approved = true
+end
