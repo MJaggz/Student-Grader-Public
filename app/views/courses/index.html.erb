@@ -21,7 +21,7 @@
 
       <div>
         <%= label_tag :catalog_number, "Course Number" %><br>
-        <%= select_tag :subject,
+        <%= select_tag :catalog_number,
               options_for_select([["All Course Numbers", ""]] + @all_course_numbers.map { |s| [s, s] }, params[:catalog_number]) %>
       </div>
 
