@@ -10,14 +10,21 @@ class CoursesController < ApplicationController
     sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
 
     # 2. Get Filter Data for the Sidebar/Dropdowns
-    @all_course_numbers = Course.distinct.order(:catalog_number).pluck(:catalog_number)
+    @course_number_levels = (1..5).map { |level| "#{level}xxx" }
     @all_terms = Course.distinct.order(:term).pluck(:term)
     @all_campuses = Course.distinct.order(:campus).pluck(:campus)
     @all_careers = Course.distinct.order(:academic_career).pluck(:academic_career)
 
     # 3. Apply Filters and Sort
     @courses = Course.all
-    @courses = @courses.where(catalog_number: params[:catalog_number]) if params[:catalog_number].present?
+    if params[:catalog_number].present?
+      if params[:catalog_number].match?(/\A[1-5]xxx\z/)
+        selected_level = params[:catalog_number][0]
+        @courses = @courses.where("catalog_number LIKE ?", "#{selected_level}%")
+      else
+        @courses = @courses.where(catalog_number: params[:catalog_number])
+      end
+    end
     @courses = @courses.where(term: params[:term]) if params[:term].present?
     @courses = @courses.where(campus: params[:campus]) if params[:campus].present?
     
