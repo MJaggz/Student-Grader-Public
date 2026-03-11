@@ -1,0 +1,59 @@
+<% if current_user.admin? %>
+  <div class="admin-reload-box">
+    <h2>Admin: Sync OSU Course Catalog</h2>
+    
+    <%= form_with url: reload_courses_path, method: :post, local: true do |f| %>
+      <div class="form-grid">
+
+        <%# Term Selection - Defaults to Spring 2026 %>
+        <div>
+          <%= f.label :term, "Academic Term" %>
+          <%= f.select :term, [
+            ["Autumn 2026", "1268"], ["Summer 2026", "1264"], ["Spring 2026", "1262"],
+            ["Autumn 2025", "1258"], ["Summer 2025", "1254"], ["Spring 2025", "1252"],
+            ["Autumn 2024", "1248"], ["Summer 2024", "1244"], ["Spring 2024", "1242"]
+          ], { selected: "1262" } %>
+        </div>
+
+        <%# Campus Selection - Defaults to Columbus %>
+        <div>
+          <%= f.label :campus, "Campus" %>
+          <%= f.select :campus, [
+            ["Columbus", "col"], ["Lima", "lma"], ["Mansfield", "mns"], 
+            ["Marion", "mrn"], ["Newark", "nwk"], ["Wooster", "wst"]
+          ], { selected: "col" } %>
+        </div>
+
+        <%# Academic Career - Defaults to Undergraduate (UGRD) %>
+        <div>
+          <%= f.label :"academic-career", "Academic Career" %>
+          <%= f.select :"academic-career", [
+            ["Undergraduate", "ugrd"], ["Graduate", "grad"]
+          ], { selected: "ugrd" } %>
+        </div>
+
+        <%# Catalog Number - Defaults to 1xxx %>
+        <div>
+          <%= f.label :"catalog-number", "Catalog Number" %>
+          <%= f.select :"catalog-number", 
+              ["1xxx", "2xxx", "3xxx", "4xxx", "5xxx", "6xxx", "7xxx", "8xxx"], 
+              { selected: "1xxx" } %>
+        </div>
+
+        <%# Instruction Mode - Defaults to In Person (P) %>
+        <div>
+          <%= f.label :"instruction-mode", "Instruction Mode" %>
+          <%= f.select :"instruction-mode", [
+            ["In Person", "p"], ["Distance Learning", "dl"], 
+            ["Distance Enhanced", "dh"], ["Hybrid", "hy"]
+          ], { selected: "p" } %>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Update Local Database", class: "button submit-button" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -7,10 +7,10 @@
   <p>Please contact an <i>adminstrator</i> for assistance.</p>
 
   <br/>
-  <%= button_to "Fetch Courses From Api", fetch_courses_path,
-                  method: :post,
+  <%= button_to "Get Courses From Api", configuration_courses_path,
+                  method: :get,
                   form: { data: { turbo_confirm: "Are you sure you want to fetch courses from the API?" } },
-                  class: "button danger" %> 
+                  class: "button" %> 
 
 <% else %>
 <h3> Filters </h3>
@@ -55,14 +55,13 @@
 <h3> Tools</h3>
 
     <div class="actions">
-      <%= button_to "Refresh Courses", update_courses_path,
-                    method: :post,
-                    form: { data: { turbo_confirm: "Fetch latest course data from the API and sync the catalog?" } },
-                    class: "button" %>
       <%= button_to "Delete All Courses", destroy_all_courses_path,
                     method: :delete,
                     form: { data: { turbo_confirm: "Are you sure you want to wipe the entire catalog?" } },
                     class: "button danger" %>
+      <%= button_to "Get More Courses", configuration_courses_path,
+              method: :get,
+              class: "button" %>
     </div>
   
   <% end %>
@@ -103,5 +102,9 @@
       <% end %>
     </tbody>
   </table>
+ <div class="pagination-container" style="display: flex; justify-content: center; padding: 1rem;">
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+
 <% end %>
 </div>
