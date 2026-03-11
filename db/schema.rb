@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_03_211723) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_11_115524) do
   create_table "courses", force: :cascade do |t|
     t.string "academic_career"
     t.string "academic_group"
@@ -30,7 +30,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_211723) do
     t.integer "class_number"
     t.integer "course_id", null: false
     t.datetime "created_at", null: false
+    t.string "credit_hours"
     t.string "days"
+    t.string "instruction_mode"
+    t.string "location"
     t.string "term"
     t.string "times"
     t.datetime "updated_at", null: false

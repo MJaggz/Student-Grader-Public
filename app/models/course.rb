@@ -95,11 +95,16 @@ class Course < ApplicationRecord
       
       formatted_days = days.any? ? days.join(" ") : "TBA"
       formatted_times = meeting["startTime"].present? ? "#{meeting["startTime"]} to #{meeting["endTime"]}" : "TBA"
-
+      meeting_location = meeting["buildingDescription"]
+      credit_hours = course.units
+      instruction_mode = api_section["instructionMode"]
       section.update!(
         term: api_section["term"],
         days: formatted_days,
-        times: formatted_times
+        times: formatted_times,
+        location: meeting_location,
+        credit_hours: credit_hours,
+        instruction_mode: instruction_mode
       )
       seen_section_ids << section.id
     end

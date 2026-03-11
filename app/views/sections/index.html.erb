@@ -1,0 +1,40 @@
+<div class="card">
+  <h2>Sections for <%= @course.subject %> <%= @course.catalog_number %></h2>
+  <p><strong>Title:</strong> <%= @course.title %></p>
+  <%= link_to "← Back to Courses", courses_path, class: "button secondary" %>
+</div>
+
+<div class="card">
+  <% if @sections.empty? %>
+    <p>No sections found for this course.</p>
+  <% else %>
+    <table class="course-table">
+      <thead>
+        <tr>
+          <th>Class #</th>
+          <th>Term</th>
+          <th>Days</th>
+          <th>Times</th>
+          <th>Location</th>
+          <th>Credit Hours</th>
+          <th>Instruction Mode</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <% @sections.each do |section| %>
+          <tr>
+            <td><%= section.class_number %></td>
+            <td><%= section.term %></td>
+            <td><%= section.days %></td>
+            <td><%= section.times %></td>
+            <td><%= section.location %></td>
+            <td><%= section.credit_hours %></td>
+            <td><%= section.instruction_mode %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
