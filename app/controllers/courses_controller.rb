@@ -14,6 +14,7 @@ class CoursesController < ApplicationController
     @all_terms = Course.distinct.order(:term).pluck(:term)
     @all_campuses = Course.distinct.order(:campus).pluck(:campus)
     @all_careers = Course.distinct.order(:academic_career).pluck(:academic_career)
+    @catalog_empty = !Course.exists?
 
     # 3. Apply Filters and Sort
     @courses = Course.all
@@ -27,6 +28,7 @@ class CoursesController < ApplicationController
     end
     @courses = @courses.where(term: params[:term]) if params[:term].present?
     @courses = @courses.where(campus: params[:campus]) if params[:campus].present?
+    @courses = @courses.where(academic_career: params[:academic_career]) if params[:academic_career].present?
     
     @courses = @courses.order("#{sort_column} #{sort_direction}")
     @pagy, @courses = pagy(@courses, items: 10)

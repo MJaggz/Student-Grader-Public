@@ -1,24 +1,23 @@
 <h2>CSE Courses Catalog</h2>
 <hr>
 
+<% if @catalog_empty %>
 <div class="card">
-<% if @courses.empty? %>
   <p>No courses available at the moment. </p>
-  <p>Please contact an <i>adminstrator</i> for assistance.</p>
+  <p>Please contact an <i>administrator</i> for assistance.</p>
 
   <br/>
   <%= button_to "Get Courses From Api", configuration_courses_path,
                   method: :get,
                   form: { data: { turbo_confirm: "Are you sure you want to fetch courses from the API?" } },
-                  class: "button" %> 
-
+                  class: "button" %>
+</div>
 <% else %>
-<h3> Filters </h3>
+  <div class="card">
+    <h3> Filters </h3>
 
-  <div class="actions">
-
-<%= form_with url: courses_path, method: :get, local: true, class: "filters" do %>
-
+    <div class="actions">
+      <%= form_with url: courses_path, method: :get, local: true, class: "filters" do %>
       <div>
         <%= label_tag :catalog_number, "Course Number" %><br>
         <%= select_tag :catalog_number,
@@ -42,17 +41,18 @@
         <%= select_tag :academic_career,
               options_for_select([["All Careers", ""]] + @all_careers.map { |c| [c, c] }, params[:academic_career]) %>
       </div>
+
+      <br>
+
+      <%= submit_tag "Apply Filters", class: "button" %>
+      <%= link_to "Clear Filters", courses_path, class: "button" %>
+      <% end %>
     </div>
+  </div>
 
-    <br>
-
-    <%= submit_tag "Apply Filters", class: "button" %>
-    <%= link_to "Clear Filters", courses_path, class: "button" %>
-<% end %>
-</div>
- <% if current_user.admin? %> 
-<div class="card"> 
-<h3> Tools</h3>
+  <% if current_user.admin? %>
+  <div class="card">
+    <h3> Tools</h3>
 
     <div class="actions">
       <%= button_to "Delete All Courses", destroy_all_courses_path,
@@ -63,51 +63,50 @@
               method: :get,
               class: "button" %>
     </div>
-  
+  </div>
   <% end %>
-  </div>
 
-<div class="card">
-  <table class="course-table">
-    <thead>
-      <tr>
-        <th>Subject</th>
-        <th>Course Number</th>
-        <th>Title</th>
-        <th>Term</th>
-        <th>Campus</th>
-        <th>Career</th>
-        <th>Sections</th>
-        <% if current_user.admin? %><th>Actions</th><% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @courses.each do |course| %>
-        <tr>
-          <td><strong><%= course.subject %></strong></td>
-          <td><%= course.catalog_number %></td>
-          <td><%= course.title %></td>
-          <td><%= course.term %></td>
-          <td><%= course.campus.upcase if course.campus %></td>
-          <td><small><%= course.academic_career %></small></td>
-          <td>
-  <%= link_to "View Sections", course_sections_path(course), class: "button info-button" %>
-</td>
-          <% if current_user.admin? %>
-            <td>
-              <%= button_to "Delete", course_path(course),
-                            method: :delete,
-                            form: { data: { turbo_confirm: "Delete this course?" } },
-                            class: "button danger" %>
-            </td>
+  <div class="card">
+    <% if @courses.empty? %>
+      <p>No courses found with that filter. Please try different filters.</p>
+    <% else %>
+      <table class="course-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Course Number</th>
+            <th>Title</th>
+            <th>Term</th>
+            <th>Campus</th>
+            <th>Career</th>
+            <% if current_user.admin? %><th>Actions</th><% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @courses.each do |course| %>
+            <tr>
+              <td><strong><%= course.subject %></strong></td>
+              <td><%= course.catalog_number %></td>
+              <td><%= course.title %></td>
+              <td><%= course.term %></td>
+              <td><%= course.campus.upcase if course.campus %></td>
+              <td><small><%= course.academic_career %></small></td>
+
+              <% if current_user.admin? %>
+                <td>
+                  <%= button_to "Delete", course_path(course),
+                                method: :delete,
+                                form: { data: { turbo_confirm: "Delete this course?" } },
+                                class: "button danger" %>
+                </td>
+              <% end %>
+            </tr>
           <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
- <div class="pagination-container" style="display: flex; justify-content: center; padding: 1rem;">
-    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+        </tbody>
+      </table>
+      <div class="pagination-container" style="display: flex; justify-content: center; padding: 1rem;">
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+      </div>
+    <% end %>
   </div>
-
 <% end %>
-</div>
