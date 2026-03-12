@@ -1,11 +1,13 @@
 class Course < ApplicationRecord
   has_many :sections, dependent: :destroy
+  scope :cse_subject, -> { where("UPPER(subject) = ?", "CSE") }
 
   def self.reload_from_api(api_params)
     url = "https://contenttest.osu.edu/v2/classes/search"
     
     # Ensure defaults are set
-    api_params[:q] = "cse"
+    api_params[:q] = ""
+    api_params[:subject] = "cse"
     api_params[:client] ||= "class-search-ui"
     
     # Track stats
@@ -29,6 +31,9 @@ class Course < ApplicationRecord
         total_pages = 1 if total_pages < 1
 
         courses_list.each do |api_data|
+          data = api_data["course"] || {}
+          next unless data["subject"].to_s.casecmp("CSE").zero?
+
           course = upsert_course(api_data, api_params)
         
           sync_sections_for_course(course, api_data["sections"] || [])
