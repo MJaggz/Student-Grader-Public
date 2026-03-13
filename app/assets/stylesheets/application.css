@@ -23,7 +23,7 @@ body {
 
 .sidebar {
   width: 220px;
-  background-color: #1f2937;
+  background-color: #1f1f1f;
   color: white;
   padding: 1.5rem 1rem;
 }
@@ -43,7 +43,7 @@ body {
 }
 
 .sidebar a:hover {
-  color: white;
+  color: rgb(254, 81, 81);;
 }
 
 /* =======================================
@@ -63,7 +63,7 @@ body {
 .navbar {
   background: white;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 3px solid #bb0000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -84,8 +84,9 @@ body {
 .card {
   background: white;
   padding: 1.5rem;
-  border-radius: 3px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border-top: 6px solid #bb0000;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(164, 163, 163, 0.911);
   margin-bottom: 1.5rem;
 }
 
@@ -95,14 +96,16 @@ body {
 
 .button {
   padding: 0.5rem 1rem;
-  background-color: #2563eb;
+  background-color: #bb0000;
+  border-color: #bb0000;
   color: white;
   text-decoration: none;
   border-radius: 5px;
 }
 
 .button:hover {
-  background-color: #1e4ed8;
+  background-color: #990000;
+  border-color: #990000;
 }
 
 /* Action button container */
@@ -127,7 +130,7 @@ body {
 .actions form button {
   display: inline-block;
   padding: 0.6rem 1.2rem;
-  background-color: #2563eb;
+  background-color: #bb0000;
   color: white;
   text-decoration: none;
   border-radius: 6px;
@@ -139,7 +142,7 @@ body {
 /* Hover effect */
 .button:hover,
 .actions form button:hover {
-  background-color: #1e40af;
+  background-color: #990000;
 }
 
 /* =======================================
@@ -246,11 +249,127 @@ tr:hover {
 /* Focus effect */
 .filters select:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #bb0000;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
 /* Filter buttons spacing */
 .filters .button {
   margin-top: 6px;
+}
+
+/*login and sign up*/
+.auth-wrapper{
+  min-height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.auth-card{
+  width:100%;
+  max-width: 460px;
+  background-color: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 15px 35px rgba(164, 163, 163, 0.911);
+  overflow: hidden;
+}
+
+.auth-card::before{
+  content: "";
+  display: block;
+  height: 8px;
+  background: #bb0000;
+}
+
+.auth-card-content{
+  padding: 36px 32px;
+}
+
+.auth-title{
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.form-label{
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+.form-input{
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.form-input:focus{
+  outline: none;
+  border-color: #bb0000;
+  box-shadow: 0 0 0 4px rgba(187,0,0.12);
+}
+
+.remember-row{
+  display:flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  color: #374151;
+  font-size: 0.98rem;
+}
+
+.auth-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  background: #bb0000;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-btn:hover {
+  background: #990000;
+  transform: translateY(-1px);
+}
+
+.auth-links{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-links a{
+  color: #bb0000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-links a:hover{
+  text-decoration: underline;
+}
+.form-group {
+  margin-bottom: 20px;
 }

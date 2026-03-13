@@ -34,9 +34,7 @@
 
         <div class="actions" style="margin-top: 2rem;">
           <% if user_signed_in? %>
-            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "button" %>
-          <% else %>
-            <%= link_to "Login", new_user_session_path, class: "button" %>
+            
           <% end %>
         </div>
       </div>

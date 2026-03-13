@@ -1,6 +1,6 @@
 <% unless user_signed_in? %>
   <div class="card">
-    <h1>CSE Course System @ OSU</h1>
+    <h1>CSE Course System At OSU</h1>
     <p>Welcome to the OSU CSE Department course and grader matching portal.</p>
   </div>
 <% end %>
@@ -31,9 +31,38 @@
     <h3>Get Started</h3>
     <p>Please log in or create an account to view available CSE courses.</p>
 
-    <div class="auth-links">
-      <%= link_to "Login", new_user_session_path, class: "button" %>
-      <%= link_to "Sign Up (Register)", new_user_registration_path, class: "button" %>
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-card-content">
+          <h1 class="auth-title">Log in</h1>
+            <p class="auth-subtitle">Use your account to access the OSU CSE Course System.</p>
+
+     
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="email" id="email" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" type="password" id="password" />
+      </div>
+
+      <div class="remember-row">
+        <input type="checkbox" id="remember" />
+        <label for="remember">Remember me</label>
+      </div>
+
+      <button class="auth-btn">Log in</button>
+      <%= link_to "Login", new_user_session_path, class: "auth-btn" %>
+
+      <div class="auth-links">
+        <a href="/users/sign_up">Sign up </a>
+        <a href="/users/password/new">Forgot your password?</a>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 <% end %>
