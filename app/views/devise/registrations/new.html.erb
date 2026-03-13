@@ -29,9 +29,11 @@
     <%= f.submit "Sign Up", class:"auth-btn"%>
   </div>
 <% end %>
-
+<div class="auth-links">
+  <%= link_to "Log in", new_session_path(resource_name) %>
 </div>
-    </div>
   </div>
+  </div>
+</div>
 
-<%= render "devise/shared/links" %>
+

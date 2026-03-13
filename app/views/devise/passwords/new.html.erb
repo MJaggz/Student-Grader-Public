@@ -14,9 +14,14 @@
   <div class="actions">
     <%= f.submit "Send me password reset instructions" , class:"auth-btn"%>
   </div>
+  <div class="auth-links">
+  <%= link_to "Log in", new_session_path(resource_name) %>
+  <%= link_to "Sign up", new_registration_path(resource_name) %>
+</div>
   </div>
     </div>
   </div>
+  
 <% end %>
 
-<%= render "devise/shared/links" %>
+

@@ -117,7 +117,7 @@ body {
 }
 
 .button.module {
-  background-color: #004a56
+  background-color: #bb0000
 }
 
 /* Make button_to forms not break layout */
@@ -188,9 +188,10 @@ body {
 
 /* Table styling */
 table {
-  width: 75%;
+  width: 100%;
   border-collapse: collapse;   
-  margin-top: 1.5rem;
+  margin-top: 0.25rem;
+  table-layout: fixed;
 }
 
 th, td {
@@ -201,6 +202,7 @@ th, td {
 th {
   background-color: #f3f4f6;
   font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 tr:nth-child(even) {
@@ -208,7 +210,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-  background-color: #eef2ff;
+  background-color: #f3f4f6;
 }
 
 /* =======================================
@@ -218,8 +220,8 @@ tr:hover {
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  align-items: end;
+  gap: 18px;
+  align-items: flex-end;
   margin-top: 1rem;
 }
 
@@ -231,21 +233,28 @@ tr:hover {
 /* Labels */
 .filters label {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #374151;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 /* Dropdown styling */
 .filters select {
-  padding: 0.5rem 0.6rem;
-  border-radius: 6px;
+  height: 44px;
+  min-width: 150px;
+  padding: 0 12px;
+  border-radius: 10px;
   border: 1px solid #d1d5db;
   background-color: white;
+  color: #111827;
   font-size: 14px;
-  min-width: 160px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
+.filters select:hover{
+  border-color: #9ca3af;
+}
 /* Focus effect */
 .filters select:focus {
   outline: none;
@@ -256,9 +265,15 @@ tr:hover {
 /* Filter buttons spacing */
 .filters .button {
   margin-top: 6px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
-/*login and sign up*/
+/*login and sign up buttons/border*/
 .auth-wrapper{
   min-height: 10vh;
   display: flex;
@@ -355,10 +370,11 @@ tr:hover {
 }
 
 .auth-links{
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
+
 }
 
 .auth-links a{
@@ -372,4 +388,61 @@ tr:hover {
 }
 .form-group {
   margin-bottom: 20px;
+}
+
+.back-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 16px;
+  border: 1px solid #bb0000;
+  border-radius: 10px;
+  color: #bb0000;
+  text-decoration: none;
+  font-weight: 600;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.back-link:hover{
+  background: #bb0000;
+  color: white;
+  text-decoration: none;
+}
+
+.cat-input{
+  width: 220px;
+  max-width: 320px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+.cat-label{
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+  margin-bottom: 20px;
+}
+.cat-input:focus{
+  outline: none;
+  border-color: #bb0000;
+  box-shadow: 0 0 0 4px rgba(187,0,0.12);
+}
+
+.cat-group {
+  margin-bottom: 20px;
+}
+
+.cat-table {
+  width: 110%;
+  border-collapse: collapse;   
+  margin-top: 0.25rem;
 }

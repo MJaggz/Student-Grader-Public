@@ -70,9 +70,10 @@
     <% if @courses.empty? %>
       <p>No courses found with that filter. Please try different filters.</p>
     <% else %>
-      <table class="course-table">
+      <table>
         <thead>
           <tr>
+          
             <th>Subject</th>
             <th>Course Number</th>
             <th>Title</th>
@@ -80,7 +81,10 @@
             <th>Campus</th>
             <th>Career</th>
             <th>Sections</th>
-            <% if current_user.admin? %><th>Actions</th><% end %>
+            <% if current_user.admin? %>
+              <th>Actions</th>
+            
+            <% end %>
           </tr>
         </thead>
         <tbody>
@@ -103,10 +107,11 @@
                                 form: { data: { turbo_confirm: "Delete this course?" } },
                                 class: "button danger" %>
                 </td>
+                
 <td>
   <%= link_to "Edit", edit_course_path(course), class: "button warning-button" %>
 </td>
-    </div>
+    
   </td>
               <% end %>
             </tr>
@@ -116,6 +121,7 @@
       <div class="pagination-container" style="display: flex; justify-content: center; padding: 1rem;">
         <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
       </div>
+      
     <% end %>
   </div>
 <% end %>
