@@ -9,8 +9,8 @@ This project was developed for the course CSE 3901 at The Ohio State University 
 Mohamed Jama
 Jay Koduru
 Success Oguntuyi
- Kierra Smith
- Daphne Kaur
+Kierra Smith
+Daphne Kaur
 
 ---
 
