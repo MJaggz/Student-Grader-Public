@@ -6,6 +6,7 @@ This is a Ruby on Rails web application for managing CSE course and section data
 ##  Development Team
 
 This project was developed for the course CSE 3901 at The Ohio State University by the following authors:
+
 Mohamed Jama
 Jay Koduru
 Success Oguntuyi
