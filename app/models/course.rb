@@ -1,6 +1,7 @@
 class Course < ApplicationRecord
   has_many :sections, dependent: :destroy
   scope :cse_subject, -> { where("UPPER(subject) = ?", "CSE") }
+  after_update :sync_data_to_sections
 
   def self.reload_from_api(api_params)
     url = "https://contenttest.osu.edu/v2/classes/search"
@@ -60,7 +61,6 @@ class Course < ApplicationRecord
 
   private
 
-  # This matches your original 'upsert_course' method
   def self.upsert_course(api_data, api_params)
     data = api_data["course"] || {}
     
@@ -81,6 +81,18 @@ class Course < ApplicationRecord
       units: data["minUnits"].to_s
     )
     course
+  end
+  private
+
+ def sync_data_to_sections
+    if saved_change_to_term? || saved_change_to_units? || saved_change_to_component? || saved_change_to_campus?
+          
+      sections.update_all(
+        term: term, 
+        credit_hours: units, 
+        instruction_mode: component
+      )
+    end
   end
 
   def self.sync_sections_for_course(course, api_sections)

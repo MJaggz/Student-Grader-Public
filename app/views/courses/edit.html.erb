@@ -1,0 +1,74 @@
+<div class="card">
+  <h2>Editing: <%= @course.subject %> <%= @course.catalog_number %></h2>
+  <p class="text-muted"><%= @course.title %></p>
+  <%= link_to "← Cancel and Back", courses_path, class: "button secondary" %>
+</div>
+
+<div class="card">
+  <%= form_with model: @course, local: true, class: "edit-course-form" do |f| %>
+    
+    <% if @course.errors.any? %>
+      <div class="error-messages">
+        <h4><%= pluralize(@course.errors.count, "error") %> prohibited this course from being saved:</h4>
+        <ul>
+          <% @course.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-grid">
+      <%# Column 1: Core Identification %>
+      <div class="form-group">
+        <%= f.label :title, "Course Title" %>
+        <%= f.text_field :title, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :subject, "Subject (e.g., CSE)" %>
+        <%= f.text_field :subject, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :catalog_number, "Catalog Number" %>
+        <%= f.text_field :catalog_number, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :units, "Credit Hours / Units" %>
+        <%= f.text_field :units, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :academic_career, "Academic Career" %>
+        <%= f.select :academic_career, [["Undergraduate", "Undergraduate"], ["Graduate", "Graduate"], ["Medicine", "Medicine"], ["Law", "Law"]], {}, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :academic_group, "Academic Group (College)" %>
+        <%= f.text_field :academic_group, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :campus, "Campus" %>
+        <%= f.select :campus, [["Columbus", "Columbus"], ["Lima", "Lima"], ["Mansfield", "Mansfield"], ["Newark", "Newark"]], {}, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :component, "Teaching Method" %>
+        <%= f.select :component, [["Lecture", "Lecture"], ["Online", "Online"], ["Hybrid", "Hybrid"], ["Distance Learning", "Distance Learning"]], {}, class: "input-field" %>
+      </div>
+    </div>
+
+    <div class="form-group full-width">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 6, class: "input-field" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Save Changes", class: "button submit-button" %>
+      <%= link_to "Discard Changes", courses_path, class: "button danger" %>
+    </div>
+  <% end %>
+</div>

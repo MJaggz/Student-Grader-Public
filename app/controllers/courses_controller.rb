@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!
   before_action :confirm_admin, only: [:destroy, :destroy_all, :reload]
+  before_action :set_course, only: [:edit, :update, :destroy]
   include Pagy::Backend
 
   def index
@@ -59,8 +60,40 @@ class CoursesController < ApplicationController
     redirect_to courses_path, notice: "Local catalog cleared."
   end
 
+  def edit
+  end
+
+  def update
+    if @course.update(course_params)
+      
+      redirect_to courses_path, notice: "Course was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
+  def set_course
+    @course = Course.find(params[:id])
+  end
+
+private
+
+def course_params
+  params.require(:course).permit(
+    :title, 
+    :subject, 
+    :catalog_number, 
+    :units, 
+    :description, 
+    :academic_career, 
+    :academic_group, 
+    :campus, 
+    :component, 
+    :term
+  )
+end
   def confirm_admin
     redirect_to root_path, alert: "Access denied: Admins only." unless current_user&.admin?
   end

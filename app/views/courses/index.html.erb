@@ -103,6 +103,11 @@
                                 form: { data: { turbo_confirm: "Delete this course?" } },
                                 class: "button danger" %>
                 </td>
+<td>
+  <%= link_to "Edit", edit_course_path(course), class: "button warning-button" %>
+</td>
+    </div>
+  </td>
               <% end %>
             </tr>
           <% end %>
