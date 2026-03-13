@@ -5,13 +5,13 @@ This is a Ruby on Rails web application for managing CSE course and section data
 —
 ##  Development Team
 
-This project was developed for the course CSE 3901 at The Ohio State University by the following authors:
+This game was developed for the course CSE 3901 at the Ohio State University by the following authors:
 
-Mohamed Jama
-Jay Koduru
-Success Oguntuyi
-Kierra Smith
-Daphne Kaur
+Mohamed Jama  
+Jay Koduru  
+Success Oguntuyi  
+Kierra Smith  
+Daphne Kaur  
 
 ---
 
