@@ -9,6 +9,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
+ <!-- Begin Application Layout -->
+
   <body>
     <div class="dashboard">
       
@@ -19,16 +21,20 @@
             <%= current_user.email %>
           </div>
         <% end %>
-
+        <!-- Sidebar Links -->
         <%= link_to "Dashboard", root_path %>
 
         <% if user_signed_in? %>
           <% if current_user.admin? %>
+             <!-- Admin Only Links -->
             <%= link_to "User Management", users_path %>
             <%= link_to "Course Catalog", courses_path %> 
+          
+             <!-- Non-Admin Links -->
           <% else %>
             <%= link_to "View Courses", courses_path %>
           <% end %>
+             <!-- Universal Links -->
           <%= link_to "Settings", edit_user_registration_path %>
         <% end %>
 
@@ -39,6 +45,7 @@
         </div>
       </div>
 
+     <!-- Top Bar -->
       <div class="main">
         <div class="navbar">
           <div>Ohio State University CSE Course System</div>
@@ -48,6 +55,7 @@
         
 <%= render "devise/shared/flash" %>
 
+<!-- Page Content -->
           <%= yield %>
         </div>
       </div>

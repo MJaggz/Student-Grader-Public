@@ -1,6 +1,8 @@
+<%# Course Catalog - Allows Modifications for Admins %>
 <h2>CSE Courses Catalog</h2>
 <hr>
 
+<%# Check for empty catalog %>
 <% if @catalog_empty %>
 <div class="card">
   <p>No courses available at the moment. </p>
@@ -12,7 +14,9 @@
                   form: { data: { turbo_confirm: "Are you sure you want to fetch courses from the API?" } },
                   class: "button" %>
 </div>
+
 <% else %>
+<%# When catalog is not empty, display filters %>
   <div class="card">
     <h3> Filters </h3>
 
@@ -50,6 +54,7 @@
     </div>
   </div>
 
+  <%# Allow Admins to make changes to courses %>
   <% if current_user.admin? %>
   <div class="card">
     <h3> Tools</h3>
@@ -66,10 +71,13 @@
   </div>
   <% end %>
 
+  <%# Empty Catalog Notification%>
   <div class="card">
     <% if @courses.empty? %>
       <p>No courses found with that filter. Please try different filters.</p>
     <% else %>
+
+      <%# Display the Catalog %>
       <table>
         <thead>
           <tr>

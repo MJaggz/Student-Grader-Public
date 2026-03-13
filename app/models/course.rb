@@ -3,6 +3,16 @@ class Course < ApplicationRecord
   scope :cse_subject, -> { where("UPPER(subject) = ?", "CSE") }
   after_update :sync_data_to_sections
 
+  validates :title, presence: true
+  validates :subject, presence: true
+  validates :catalog_number, presence: true
+  validates :units, presence: true
+  validates :academic_career, presence: true
+  validates :academic_group, presence: true
+  validates :campus, presence: true
+  validates :component, presence: true
+  validates :description, presence: true
+
   def self.reload_from_api(api_params)
     url = "https://contenttest.osu.edu/v2/classes/search"
     
@@ -49,10 +59,8 @@ class Course < ApplicationRecord
       end
     end
 
-
     if total_saved > 0
       stale = Course.where(term: api_params[:term], campus: api_params[:campus])
-                  
       stale.destroy_all
     end
 
@@ -64,7 +72,6 @@ class Course < ApplicationRecord
   def self.upsert_course(api_data, api_params)
     data = api_data["course"] || {}
     
-    # Find the existing record so we don't create duplicates
     course = Course.find_or_initialize_by(
       subject: data["subject"],
       catalog_number: data["catalogNumber"],
@@ -82,11 +89,9 @@ class Course < ApplicationRecord
     )
     course
   end
-  private
 
- def sync_data_to_sections
+  def sync_data_to_sections
     if saved_change_to_term? || saved_change_to_units? || saved_change_to_component? || saved_change_to_campus?
-          
       sections.update_all(
         term: term, 
         credit_hours: units, 
@@ -101,7 +106,6 @@ class Course < ApplicationRecord
     api_sections.each do |api_section|
       section = course.sections.find_or_initialize_by(class_number: api_section["classNumber"])
       
-      # Meeting logic
       meeting = api_section["meetings"]&.first || {}
       days = []
       days << "M" if meeting["monday"]
@@ -115,6 +119,7 @@ class Course < ApplicationRecord
       meeting_location = meeting["buildingDescription"]
       credit_hours = course.units
       instruction_mode = api_section["instructionMode"]
+
       section.update!(
         term: api_section["term"],
         days: formatted_days,
@@ -129,3 +134,4 @@ class Course < ApplicationRecord
     course.sections.where.not(id: seen_section_ids).destroy_all
   end
 end
+

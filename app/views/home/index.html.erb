@@ -1,3 +1,4 @@
+<%# Home Page %>
 <% unless user_signed_in? %>
   <div class="card">
     <h1>CSE Course System At OSU</h1>
@@ -7,6 +8,7 @@
 
 <hr>
 
+<%# Display Login Status %>
 <% if user_signed_in? %>
   <div class="card">
     <h3>Welcome, <%= current_user.email %>!</h3>
@@ -15,6 +17,7 @@
       <strong><%= current_user.role.capitalize %></strong>.
     </p>
 
+<%# Available actions for logged in users %>
     <div class="actions">
       <%= link_to "Notifications", notifications_path, class: "button" %>
       <%= link_to "Settings", edit_user_registration_path, class: "button" %>
@@ -27,6 +30,7 @@
 
   <hr>
 <% else %>
+<%# Prompt to login when no user is signed in %>
   <div class="card">
     <h3>Get Started</h3>
     <p>Please log in or create an account to view available CSE courses.</p>
@@ -66,7 +70,7 @@
   </div>
 <% end %>
 
-
+<%# Modules Avaailble for logged in Users %>
 <% if user_signed_in? && defined?(users_path) %>
   <div class="card">
     <h3>Modules</h3>

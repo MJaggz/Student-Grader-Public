@@ -1,3 +1,4 @@
+<%# Notifications Page %>
 <h2>Notifications</h2>
 <div class="card">
 <table>
@@ -12,6 +13,7 @@
     <% if user_signed_in? && current_user.admin? %>
     <% @users.each do |user| %>
       <tr>
+        <%# Generate notifications for any oustanding user approvals %>
         <% if user.approved? %>
         <% else %>
         <td> Oustanding User Approval </td>

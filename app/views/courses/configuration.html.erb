@@ -1,6 +1,9 @@
+<%# Admin Only - Course Catalog Syncing Page %>
+
 <% if current_user.admin? %>
+<div class="card">
   <div class="admin-reload-box">
-    <h2>Admin: Sync OSU Course Catalog</h2>
+    <h2>Sync Course Catalog</h2>
     
     <%= form_with url: reload_courses_path, method: :post, local: true do |f| %>
       <div class="form-grid">
@@ -57,5 +60,6 @@
         <%= f.submit "Update Local Database", class: "button submit-button" %>
       </div>
     <% end %>
+  </div>
   </div>
 <% end %>
