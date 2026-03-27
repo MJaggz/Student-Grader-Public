@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_11_115524) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_010451) do
+  create_table "availabilities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "day"
+    t.time "end_time"
+    t.integer "grader_application_id", null: false
+    t.time "start_time"
+    t.datetime "updated_at", null: false
+    t.index ["grader_application_id"], name: "index_availabilities_on_grader_application_id"
+  end
+
+  create_table "course_preferences", force: :cascade do |t|
+    t.integer "course_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "grader_application_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_preferences_on_course_id"
+    t.index ["grader_application_id"], name: "index_course_preferences_on_grader_application_id"
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string "academic_career"
     t.string "academic_group"
@@ -24,6 +43,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_115524) do
     t.string "title"
     t.string "units"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "grader_applications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "expected_graduation"
+    t.string "phone_number"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_grader_applications_on_user_id"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -54,5 +82,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_11_115524) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "availabilities", "grader_applications"
+  add_foreign_key "course_preferences", "courses"
+  add_foreign_key "course_preferences", "grader_applications"
+  add_foreign_key "grader_applications", "users"
   add_foreign_key "sections", "courses"
 end

@@ -1,0 +1,56 @@
+<div class="card">
+  <h2>My Grader Application Status</h2>
+  <p><strong>Status:</strong> <span style="color: green;">Submitted / Active</span></p>
+  
+  <div style="margin-top: 15px;">
+    <%= link_to "Edit Application", edit_grader_application_path, class: "button warning-button" %>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 20px;">
+  <h3>Contact Details</h3>
+  <ul>
+    <li><strong>Email:</strong> <%= current_user.email %></li>
+    <li><strong>Phone Number:</strong> <%= @application.phone_number %></li>
+    <li><strong>Expected Graduation:</strong> <%= @application.expected_graduation %></li>
+  </ul>
+</div>
+
+<div class="card" style="margin-top: 20px;">
+  <h3>Courses Qualified to Grade</h3>
+  <% if @application.courses.any? %>
+    <ul>
+      <% @application.courses.each do |course| %>
+        <li><%= course.subject %> <%= course.catalog_number %> - <%= course.title %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted">You have not selected any courses yet.</p>
+  <% end %>
+</div>
+
+<div class="card" style="margin-top: 20px;">
+  <h3>Schedule Availability</h3>
+  <% if @application.availabilities.any? %>
+    <table class="course-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Available From</th>
+          <th>Available Until</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @application.availabilities.each do |availability| %>
+          <tr>
+            <td><%= availability.day %></td>
+            <td><%= availability.start_time&.strftime("%I:%M %p") %></td>
+            <td><%= availability.end_time&.strftime("%I:%M %p") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-muted">You have not listed any available grading times.</p>
+  <% end %>
+</div>

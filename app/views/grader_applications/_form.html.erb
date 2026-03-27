@@ -1,0 +1,75 @@
+<%= form_with model: @application, url: grader_application_path, local: true, id: "grader-application-form" do |f| %>
+  <div class="card">
+    <h3>Basic Information</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <%= f.label :phone_number %>
+        <%= f.telephone_field :phone_number, class: "input-field" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :expected_graduation, "Expected Graduation (e.g., Spring 2027)" %>
+        <%= f.text_field :expected_graduation, class: "input-field" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Qualified Courses</h3>
+    <p class="text-muted">Search and select all the courses you have taken and are qualified to grade.</p>
+    
+    <input type="text" id="course-search" placeholder="Search by course number (e.g., 2221) or name..." class="input-field" style="margin-bottom: 15px; width: 100%; padding: 10px;">
+
+    <div class="checkbox-grid" id="courses-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 250px; overflow-y: auto; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fafafa;">
+      <%= f.collection_check_boxes :course_ids, Course.all.order(:subject, :catalog_number), :id, :title do |b| %>
+        <div class="checkbox-item course-item">
+          <%= b.check_box %>
+          <%# Added the course title to the label so the search bar can find it easily %>
+          <%= b.label(class: "checkbox-label") { "#{b.object.subject} #{b.object.catalog_number} - #{b.object.title}" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 20px;">
+    <h3>Schedule Availability</h3>
+    <p class="text-muted">Enter the blocks of time you are free to grade/attend sections. Add as many as you need.</p>
+    
+    <div id="availabilities-container">
+      <%= f.fields_for :availabilities do |av_form| %>
+        <div class="availability-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+          <%= av_form.select :day, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], { include_blank: "Select Day" }, class: "input-field" %>
+          
+          <%= av_form.time_field :start_time, class: "input-field" %>
+          <span>to</span>
+          <%= av_form.time_field :end_time, class: "input-field" %>
+          
+          <% if av_form.object.persisted? %>
+            <%# Hidden field to tell Rails to delete this record if the user removes it %>
+            <%= av_form.hidden_field :_destroy, class: "destroy-flag" %>
+            <button type="button" class="button danger remove-availability" style="padding: 5px 10px;">X</button>
+          <% else %>
+            <button type="button" class="button danger remove-availability" style="padding: 5px 10px;">X</button>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <button type="button" id="add-availability" class="button secondary" style="margin-top: 10px;">+ Add Another Time Block</button>
+
+    <template id="availability-template">
+      <%= f.fields_for :availabilities, Availability.new, child_index: "NEW_RECORD" do |av_form| %>
+        <div class="availability-row new-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+          <%= av_form.select :day, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], { include_blank: "Select Day" }, class: "input-field" %>
+          <%= av_form.time_field :start_time, class: "input-field" %>
+          <span>to</span>
+          <%= av_form.time_field :end_time, class: "input-field" %>
+          <button type="button" class="button danger remove-availability" style="padding: 5px 10px;">X</button>
+        </div>
+      <% end %>
+    </template>
+  </div>
+
+  <div class="form-actions" style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
+    <%= f.submit @application.new_record? ? "Submit Application" : "Save Updates", class: "button submit-button", style: "width: 100%; font-size: 1.1rem; padding: 12px;" %>
+  </div>
+<% end %>

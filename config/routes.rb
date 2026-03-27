@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   resources :sections, only: [:show, :destroy]
-
+  resource :grader_application, only: [:show, :new, :create, :edit, :update]
   get "notifications", to: "notifications#index"
   get "up" => "rails/health#show", as: :rails_health_check
 end

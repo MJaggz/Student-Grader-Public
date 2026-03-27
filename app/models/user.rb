@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
  # Automatically approve student accounts upon creation
  before_save :approve_students
+ has_one :grader_application, dependent: :destroy
 
   def approve_students
     self.approved = true if self.student?

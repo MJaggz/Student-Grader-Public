@@ -1,0 +1,7 @@
+<div class="card">
+  <h2>Update Your Grader Application</h2>
+  <p>Did your schedule change or did you pass a new course? Update your profile here.</p>
+  <%= link_to "← Back to Application Status", grader_application_path, class: "button secondary" %>
+</div>
+
+<%= render "form", application: @application %>
