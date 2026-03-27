@@ -3,7 +3,6 @@ class GraderApplicationsController < ApplicationController
   before_action :set_application, only: [:show, :edit, :update]
 
   def show
-    # If they don't have an application yet, send them to create one
     redirect_to new_grader_application_path if @application.nil?
   end
 
@@ -29,12 +28,11 @@ class GraderApplicationsController < ApplicationController
   end
 
   def edit
-    # @application is set by before_action
   end
 
   def update
     if @application.update(application_params)
-      redirect_to grader_application_path, notice: "Application updated for the new semester!"
+      redirect_to grader_application_path, notice: "Application updated!"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -49,7 +47,7 @@ class GraderApplicationsController < ApplicationController
   def application_params
     params.require(:grader_application).permit(
       :phone_number, :expected_graduation,
-      course_ids: [], # This array captures all the checkboxes for courses
+      course_ids: [],
       availabilities_attributes: [:id, :day, :start_time, :end_time, :_destroy]
     )
   end

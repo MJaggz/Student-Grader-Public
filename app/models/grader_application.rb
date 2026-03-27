@@ -6,7 +6,6 @@ class GraderApplication < ApplicationRecord
 
   has_many :availabilities, dependent: :destroy
 
-  # Allows the form to save courses and times simultaneously
   accepts_nested_attributes_for :availabilities, allow_destroy: true
   
   validates :phone_number, presence: true
