@@ -6,14 +6,14 @@ class CoursesController < ApplicationController
 
   def index
     # 1. Setup Sorting
-    allowed_columns = ["subject", "catalog_number", "title", "term", "campus", "academic_career"]
+    allowed_columns = ["subject", "catalog_number", "title", "campus", "academic_career"]
     sort_column = allowed_columns.include?(params[:sort]) ? params[:sort] : "catalog_number"
     sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
 
     # 2. Get Filter Data for the Sidebar/Dropdowns
     @course_number_levels = (1..5).map { |level| "#{level}xxx" }
     cse_courses = Course.cse_subject
-    @all_terms = cse_courses.distinct.order(:term).pluck(:term)
+    @all_terms = Section.joins(:course).merge(cse_courses).where.not(term: [nil, ""]).distinct.order(:term).pluck(:term)
     @all_campuses = cse_courses.distinct.order(:campus).pluck(:campus)
     @all_careers = cse_courses.distinct.order(:academic_career).pluck(:academic_career)
     @catalog_empty = !cse_courses.exists?
@@ -28,11 +28,11 @@ class CoursesController < ApplicationController
         @courses = @courses.where(catalog_number: params[:catalog_number])
       end
     end
-    @courses = @courses.where(term: params[:term]) if params[:term].present?
+    @courses = @courses.offered_in_term(params[:term]) if params[:term].present?
     @courses = @courses.where(campus: params[:campus]) if params[:campus].present?
     @courses = @courses.where(academic_career: params[:academic_career]) if params[:academic_career].present?
     
-    @courses = @courses.order("#{sort_column} #{sort_direction}")
+    @courses = @courses.includes(:sections).order("#{sort_column} #{sort_direction}")
     @pagy, @courses = pagy(@courses, items: 10)
   end
 
@@ -90,8 +90,7 @@ def course_params
     :academic_career, 
     :academic_group, 
     :campus, 
-    :component, 
-    :term
+    :component
   )
 end
   def confirm_admin

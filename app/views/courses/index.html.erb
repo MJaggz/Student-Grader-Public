@@ -85,7 +85,7 @@
             <th>Subject</th>
             <th>Course Number</th>
             <th>Title</th>
-            <th>Term</th>
+            <th>Offered Terms</th>
             <th>Campus</th>
             <th>Career</th>
             <th>Sections</th>
@@ -101,7 +101,7 @@
               <td><strong><%= course.subject %></strong></td>
               <td><%= course.catalog_number %></td>
               <td><%= course.title %></td>
-              <td><%= course.term %></td>
+              <td><%= course.offered_terms.join(", ") %></td>
               <td><%= course.campus.upcase if course.campus %></td>
               <td><small><%= course.academic_career %></small></td>
               <td>

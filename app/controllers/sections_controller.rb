@@ -6,10 +6,10 @@ class SectionsController < ApplicationController
       # Find the specific course first
       @course = Course.find(params[:course_id])
       # Get only sections for that course
-      @sections = @course.sections
+      @sections = @course.sections.order(term: :desc, class_number: :asc)
     else
       # Fallback: show all sections if no course_id is provided
-      @sections = Section.all
+      @sections = Section.order(term: :desc, class_number: :asc)
     end
 
     # Optional: Add pagination if you have many sections

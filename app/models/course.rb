@@ -1,6 +1,7 @@
 class Course < ApplicationRecord
   has_many :sections, dependent: :destroy
   scope :cse_subject, -> { where("UPPER(subject) = ?", "CSE") }
+  scope :offered_in_term, ->(term) { joins(:sections).where(sections: { term: term }).distinct }
   after_update :sync_data_to_sections
 
   validates :title, presence: true
@@ -13,9 +14,13 @@ class Course < ApplicationRecord
   validates :component, presence: true
   validates :description, presence: true
 
+  def offered_terms
+    sections.where.not(term: [nil, ""]).distinct.order(:term).pluck(:term)
+  end
+
   def self.reload_from_api(api_params)
     url = "https://contenttest.osu.edu/v2/classes/search"
-    
+
     # Ensure defaults are set
     api_params[:q] = ""
     api_params[:subject] = "cse"
@@ -47,7 +52,7 @@ class Course < ApplicationRecord
 
           course = upsert_course(api_data, api_params)
         
-          sync_sections_for_course(course, api_data["sections"] || [])
+          sync_sections_for_course(course, api_data["sections"] || [], api_params[:term])
           
           total_saved += 1
         end
@@ -57,11 +62,6 @@ class Course < ApplicationRecord
         puts "API Error: #{response.code}"
         break
       end
-    end
-
-    if total_saved > 0
-      stale = Course.where(term: api_params[:term], campus: api_params[:campus])
-      stale.destroy_all
     end
 
     return total_saved
@@ -75,7 +75,6 @@ class Course < ApplicationRecord
     course = Course.find_or_initialize_by(
       subject: data["subject"],
       catalog_number: data["catalogNumber"],
-      term: data["term"],
       campus: data["campus"]
     )
 
@@ -91,20 +90,26 @@ class Course < ApplicationRecord
   end
 
   def sync_data_to_sections
-    if saved_change_to_term? || saved_change_to_units? || saved_change_to_component? || saved_change_to_campus?
+    if saved_change_to_units?
       sections.update_all(
-        term: term, 
-        credit_hours: units, 
-        instruction_mode: component
+        credit_hours: units
       )
     end
   end
 
-  def self.sync_sections_for_course(course, api_sections)
+  def self.sync_sections_for_course(course, api_sections, requested_term = nil)
     seen_section_ids = []
+    section_terms = api_sections.filter_map { |api_section| api_section["term"] }.uniq
+    section_terms << requested_term if requested_term.present?
+    section_terms.compact!
+    section_terms.uniq!
 
     api_sections.each do |api_section|
-      section = course.sections.find_or_initialize_by(class_number: api_section["classNumber"])
+      section_term = api_section["term"] || requested_term
+      section = course.sections.find_or_initialize_by(
+        class_number: api_section["classNumber"],
+        term: section_term
+      )
       
       meeting = api_section["meetings"]&.first || {}
       days = []
@@ -121,7 +126,7 @@ class Course < ApplicationRecord
       instruction_mode = api_section["instructionMode"]
 
       section.update!(
-        term: api_section["term"],
+        term: section_term,
         days: formatted_days,
         times: formatted_times,
         location: meeting_location,
@@ -131,7 +136,10 @@ class Course < ApplicationRecord
       seen_section_ids << section.id
     end
 
-    course.sections.where.not(id: seen_section_ids).destroy_all
+    return if section_terms.empty?
+
+    stale_sections = course.sections.where(term: section_terms)
+    stale_sections = stale_sections.where.not(id: seen_section_ids) if seen_section_ids.any?
+    stale_sections.destroy_all
   end
 end
-
