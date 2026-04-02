@@ -3,17 +3,17 @@ class SectionsController < ApplicationController
 
   def index
     if params[:course_id]
-      # Find the specific course first
       @course = Course.find(params[:course_id])
-      # Get only sections for that course
-      @sections = @course.sections.order(term: :desc, class_number: :asc)
-    else
-      # Fallback: show all sections if no course_id is provided
-      @sections = Section.order(term: :desc, class_number: :asc)
-    end
+      @available_terms = @course.sections.where.not(term: [nil, ""]).distinct.order(term: :desc).pluck(:term)
+      @selected_term = params[:term].presence
 
-    # Optional: Add pagination if you have many sections
-    # @pagy, @sections = pagy(@sections, items: 10)
+      @sections = @course.sections
+      @sections = @sections.with_term(@selected_term)
+      @sections = @sections.ordered_for_catalog
+    else
+      @selected_term = params[:term].presence
+      @sections = Section.with_term(@selected_term).ordered_for_catalog
+    end
   end
 
   def show

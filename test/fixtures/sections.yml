@@ -2,6 +2,7 @@
 
 one:
   course: one
+  section_number: "001"
   class_number: 1
   term: MyString
   days: MyString
@@ -9,6 +10,7 @@ one:
 
 two:
   course: two
+  section_number: "001"
   class_number: 1
   term: MyString
   days: MyString

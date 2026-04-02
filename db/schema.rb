@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_31_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_02_120000) do
   create_table "availabilities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "day"
@@ -61,9 +61,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_120000) do
     t.string "days"
     t.string "instruction_mode"
     t.string "location"
+    t.string "section_number"
     t.string "term"
     t.string "times"
     t.datetime "updated_at", null: false
+    t.index ["course_id", "term", "section_number"], name: "index_sections_on_course_term_and_section_number", unique: true
     t.index ["course_id"], name: "index_sections_on_course_id"
   end
 

@@ -106,9 +106,10 @@ class Course < ApplicationRecord
 
     api_sections.each do |api_section|
       section_term = api_section["term"] || requested_term
+      section_number = extract_section_number(api_section)
       section = course.sections.find_or_initialize_by(
-        class_number: api_section["classNumber"],
-        term: section_term
+        term: section_term,
+        section_number: section_number
       )
       
       meeting = api_section["meetings"]&.first || {}
@@ -127,6 +128,8 @@ class Course < ApplicationRecord
 
       section.update!(
         term: section_term,
+        section_number: section_number,
+        class_number: api_section["classNumber"],
         days: formatted_days,
         times: formatted_times,
         location: meeting_location,
@@ -141,5 +144,12 @@ class Course < ApplicationRecord
     stale_sections = course.sections.where(term: section_terms)
     stale_sections = stale_sections.where.not(id: seen_section_ids) if seen_section_ids.any?
     stale_sections.destroy_all
+  end
+
+  def self.extract_section_number(api_section)
+    api_section["section"] ||
+      api_section["sectionNumber"] ||
+      api_section["classSection"] ||
+      api_section["classNumber"]&.to_s
   end
 end

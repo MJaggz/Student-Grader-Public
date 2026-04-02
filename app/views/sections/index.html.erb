@@ -2,16 +2,37 @@
 <div class="card">
   <h2>Sections for <%= @course.subject %> <%= @course.catalog_number %></h2>
   <p><strong>Title:</strong> <%= @course.title %></p>
-  <%= link_to "← Back to Courses", courses_path, class: "button secondary" %>
+  <% if @selected_term.present? %>
+    <p><strong>Showing term:</strong> <%= @selected_term %></p>
+  <% end %>
+  <%= link_to "← Back to Courses", courses_path(term: @selected_term.presence), class: "button secondary" %>
 </div>
 
 <div class="card">
+  <% if @available_terms.present? %>
+    <div class="actions">
+      <%= form_with url: course_sections_path(@course), method: :get, local: true, class: "filters" do %>
+        <div>
+          <%= label_tag :term, "Manage Term" %><br>
+          <%= select_tag :term,
+                options_for_select([["All Terms", ""]] + @available_terms.map { |term| [term, term] }, @selected_term) %>
+        </div>
+
+        <br>
+
+        <%= submit_tag "Apply Term Filter", class: "button" %>
+        <%= link_to "Clear Filter", course_sections_path(@course), class: "button" %>
+      <% end %>
+    </div>
+  <% end %>
+
   <% if @sections.empty? %>
-    <p>No sections found for this course.</p>
+    <p><%= @selected_term.present? ? "No sections found for this course in that term." : "No sections found for this course." %></p>
   <% else %>
     <table class="course-table">
       <thead>
         <tr>
+          <th>Section</th>
           <th>Class #</th>
           <th>Term</th>
           <th>Days</th>
@@ -26,6 +47,7 @@
       <tbody>
         <% @sections.each do |section| %>
           <tr>
+            <td><%= section.section_number %></td>
             <td><%= section.class_number %></td>
             <td><%= section.term %></td>
             <td><%= section.days %></td>

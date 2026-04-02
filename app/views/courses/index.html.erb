@@ -105,7 +105,7 @@
               <td><%= course.campus.upcase if course.campus %></td>
               <td><small><%= course.academic_career %></small></td>
               <td>
-                <%= link_to "View Sections", course_sections_path(course), class: "button info-button" %>
+                <%= link_to "View Sections", course_sections_path(course, term: params[:term].presence), class: "button info-button" %>
               </td>
 
               <% if current_user.admin? %>
