@@ -8,6 +8,7 @@ class Course < ApplicationRecord
   validates :subject, presence: true
   validates :catalog_number, presence: true
   validates :units, presence: true
+  validates :units, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
   validates :academic_career, presence: true
   validates :academic_group, presence: true
   validates :campus, presence: true

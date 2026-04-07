@@ -6,7 +6,7 @@ class GraderApplication < ApplicationRecord
 
   has_many :availabilities, dependent: :destroy
 
-  accepts_nested_attributes_for :availabilities, allow_destroy: true
+  accepts_nested_attributes_for :availabilities, allow_destroy: true, reject_if: :all_blank
   
   validates :phone_number, presence: true
 end
