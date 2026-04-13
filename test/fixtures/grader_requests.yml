@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  request_number: MyString
+  section: one
+  requestor_name: MyString
+  num_graders_requested: 1
+  fulfilled: false
+
+two:
+  request_number: MyString
+  section: two
+  requestor_name: MyString
+  num_graders_requested: 1
+  fulfilled: false

@@ -1,0 +1,50 @@
+<%# Catalog of Grader Requests - Admin Only %>
+
+<h2>All Grader Requests</h2>
+
+<div class="card">
+  <% if @grader_requests.blank? %>
+    <p>No grader requests found.</p>
+  <% else %>
+    <table class="course-table">
+      <thead>
+        <tr>
+          <th>Request Date</th>
+          <th>Requested By</th>
+          <th>Fulfilled</th>
+          <th>Request #</th>
+          <th>Course</th>
+          <th>Section</th>
+          <th># Requested</th>
+          <th># Assigned</th>
+          <th>Assign</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @grader_requests.each do |grader_request| %>
+          <tr>
+            <td><%= grader_request.request_date&.strftime("%b %d, %Y") %></td>
+            <td><%= grader_request.requestor_name %></td>
+            <td><%= grader_request.fulfilled_date&.strftime("%b %d, %Y") %></td>
+            <td><%= grader_request.request_number %></td>
+            <td>
+              <%= grader_request.section.course.subject %>
+              <%= grader_request.section.course.catalog_number %>
+            </td>
+            <td><%= grader_request.section.section_number %></td>
+            <td><%= grader_request.num_graders_requested %></td>
+            <td><%= grader_request.num_graders_assigned %></td>
+            <td>
+              <%= link_to "Assign Graders",
+                  grader_request_grader_assignments_path(grader_request),
+                  class: "button module" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<%= link_to "Back", :back, class: "back-link" %>

@@ -23,14 +23,20 @@
         <% end %>
         <!-- Sidebar Links -->
         <%= link_to "Dashboard", root_path %>
+        <%= link_to "Notifications", notifications_path %>
 
         <% if user_signed_in? %>
           <% if current_user.admin? %>
              <!-- Admin Only Links -->
             <%= link_to "User Management", users_path %>
             <%= link_to "Course Catalog", courses_path %> 
+            <%= link_to "Configure Catalog", configuration_courses_path %> 
+            <%= link_to "Grader Requests", grader_requests_path %> 
           
              <!-- Non-Admin Links -->
+          <% elsif current_user.student?%>
+            <%= link_to "Grader Application", grader_application_path %>
+            <%= link_to "View Courses", courses_path %>
           <% else %>
             <%= link_to "View Courses", courses_path %>
           <% end %>

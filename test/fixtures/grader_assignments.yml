@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  section: one
+  grader_application: one
+  assigned_at: 2026-04-13 01:44:36
+
+two:
+  section: two
+  grader_application: two
+  assigned_at: 2026-04-13 01:44:36

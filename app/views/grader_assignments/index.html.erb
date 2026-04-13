@@ -1,0 +1,80 @@
+<%# Grader Assignments - Admin Only %>
+<h2>Assign Graders</h2>
+
+<div class="card">
+  <h3>Request Details</h3>
+  <p><strong>Request #:</strong> <%= @grader_request.request_number %>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;Requested By:</strong> <%= @grader_request.requestor_name %>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;Request Date:</strong> <%= @grader_request.request_date&.strftime("%b %d, %Y") %>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;Status:</strong> <%= @grader_request.fulfilled? ? "Fulfilled" : "Open" %></p>
+</div>
+
+<div class="card">
+  <h3>Section Details</h3>
+  <p><strong>Course:</strong> <%= @section.course.subject %> <%= @section.course.catalog_number %> - <%= @section.course.title %></p>
+  <p><strong>Section:</strong> <%= @section.section_number %>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;Term:</strong> <%= @section.term %>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;Days/Times:</strong> <%= @section.days %> <%= @section.times %></p>
+  <p><strong>Requested:</strong> <%= @grader_request.num_graders_requested %>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;Assigned:</strong> <%= @grader_request.num_graders_assigned %></p>
+</div>
+
+<div class="card">
+  <h3>Matched Graders</h3>
+
+  <% if @grader_applications.blank? %>
+    <p>No matched graders found.</p>
+  <% else %>
+    <table class="course-table">
+      <thead>
+        <tr>
+          <th>Applicant</th>
+          <th>Email</th>
+          <th>Expected Graduation</th>
+          <th>Status</th>
+          <th>Assign</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @grader_applications.each do |application| %>
+          <tr>
+            <td><%= application.user.email %></td>
+            <td><%= application.user.email %></td>
+            <td><%= application.expected_graduation %></td>
+            <td>
+              <% if @assigned_application_ids.include?(application.id) %>
+                Assigned
+              <% else %>
+                Available
+              <% end %>
+            </td>
+            <td>
+              <% if @assigned_application_ids.include?(application.id) %>
+                <% assignment = @section.grader_assignments.find_by(grader_application_id: application.id) %>
+                <%= button_to "Remove",
+                      grader_assignment_path(assignment),
+                      method: :delete,
+                      class: "button secondary" %>
+              <% elsif @grader_request.fulfilled? %>
+                <button type="button" disabled>Full</button>
+              <% else %>
+                <%= button_to "Assign",
+                      grader_assignments_path,
+                      method: :post,
+                      params: {
+                        grader_assignment: {
+                          section_id: @section.id,
+                          grader_application_id: application.id
+                        }
+                      },
+                      class: "button module" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<%= link_to "Back to Requests", grader_requests_path, class: "back-link" %>

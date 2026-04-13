@@ -93,7 +93,7 @@ GRADER_MANAGER/
 2. Install the required gems, setup the database, and start the rails server with the following commands.
 - Bundle install
 - bin/rails db:migrate
-- bin/rails db.seed
+- bin/rails db:seed
 - bin/rails server
 3. Open http://localhost:3000
 

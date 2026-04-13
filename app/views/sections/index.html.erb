@@ -40,8 +40,7 @@
           <th>Location</th>
           <th>Credit Hours</th>
           <th>Instruction Mode</th>
-
-
+          <th>Grader Request</th>
         </tr>
       </thead>
       <tbody>
@@ -55,9 +54,39 @@
             <td><%= section.location %></td>
             <td><%= section.credit_hours %></td>
             <td><%= section.instruction_mode %></td>
+            <td>
+              <% if section.grader_request.present? %>
+                <span>Request already submitted</span>
+              <% else %>
+                <button type="button" onclick="document.getElementById('grader-request-modal-<%= section.id %>').showModal()">
+                  Request Grader
+                </button>
+              <% end %>
+            </td>
           </tr>
+
+          <% unless section.grader_request.present? %>
+            <dialog id="grader-request-modal-<%= section.id %>">
+              <h3>Request grader for Section <%= section.section_number %></h3>
+
+              <%= form_with model: [section, GraderRequest.new], url: section_grader_request_path(section), local: true do |f| %>
+                <div>
+                  <%= f.label :num_graders_requested, "Number of graders requested" %>
+                  <%= f.number_field :num_graders_requested, min: 1, required: true %>
+                </div>
+
+                <div>
+                  <br/>
+                  <%= f.submit "Submit Request" %>
+                  <button type="button" onclick="document.getElementById('grader-request-modal-<%= section.id %>').close()">
+                    Cancel
+                  </button>
+                </div>
+              <% end %>
+            </dialog>
+          <% end %>
         <% end %>
       </tbody>
     </table>
   <% end %>
-</div>
+</div>q

@@ -84,10 +84,14 @@
         <%= link_to "User Management", users_path, class: "button module" %>
         <%= link_to "Configure Course Catalog", configuration_courses_path, class: "button module" %>
         <%= link_to "View Course Catalog", courses_path, class: "button module" %>
+        <%= link_to "View Grader Requests", grader_requests_path, class: "button module" %>
+      <% elsif current_user.instructor? %>
+        <%= link_to "View Courses/Request Grader", courses_path, class: "button module" %>
       <% else %>
         <%= link_to "View Courses", courses_path, class: "button module" %>
+        <%= link_to "Submit Grader Application", grader_application_path, class: "button module" %> 
       <% end %>
-              <%= link_to "My Grader Application", grader_application_path, style: "color: #4CAF50; font-weight: bold;" %> |
+          
     </div>
   </div>
 <% end %>

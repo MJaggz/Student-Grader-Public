@@ -1,0 +1,14 @@
+=> 
+[32m#<Section:0x0000725531ce7720[0m
+ id: [34m[1m1[0m,
+ class_number: [34m[1m6108[0m,
+ course_id: [34m[1m1[0m,
+ created_at: [31m[1m"[0m[31m2026-04-11 17:56:03.485933000 +0000[0m[31m[1m"[0m,
+ credit_hours: [31m[1m"[0m[31m3[0m[31m[1m"[0m,
+ days: [31m[1m"[0m[31mT Th[0m[31m[1m"[0m,
+ instruction_mode: [31m[1m"[0m[31mIn Person[0m[31m[1m"[0m,
+ location: [31m[1m"[0m[31mDreese Lab 113[0m[31m[1m"[0m,
+ section_number: [31m[1m"[0m[31m0010[0m[31m[1m"[0m,
+ term: [31m[1m"[0m[31mSpring 2026[0m[31m[1m"[0m,
+ times: [31m[1m"[0m[31m1:50 pm to 2:45 pm[0m[31m[1m"[0m,
+ updated_at: [31m[1m"[0m[31m2026-04-11 17:56:03.485933000 +0000[0m[31m[1m"[0m[32m>[0m

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_02_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_014435) do
   create_table "availabilities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "day"
@@ -53,6 +53,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_02_120000) do
     t.index ["user_id"], name: "index_grader_applications_on_user_id"
   end
 
+  create_table "grader_assignments", force: :cascade do |t|
+    t.datetime "assigned_at"
+    t.datetime "created_at", null: false
+    t.integer "grader_application_id", null: false
+    t.integer "section_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["grader_application_id"], name: "index_grader_assignments_on_grader_application_id"
+    t.index ["section_id", "grader_application_id"], name: "idx_on_section_id_grader_application_id_3157eb372f", unique: true
+    t.index ["section_id"], name: "index_grader_assignments_on_section_id"
+  end
+
+  create_table "grader_requests", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "fulfilled"
+    t.datetime "fulfilled_date"
+    t.integer "num_graders_assigned", default: 0, null: false
+    t.integer "num_graders_requested"
+    t.datetime "request_date"
+    t.string "request_number"
+    t.string "requestor_name"
+    t.integer "section_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["section_id"], name: "index_grader_requests_on_section_id"
+  end
+
   create_table "sections", force: :cascade do |t|
     t.integer "class_number"
     t.integer "course_id", null: false
@@ -87,5 +112,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_02_120000) do
   add_foreign_key "course_preferences", "courses"
   add_foreign_key "course_preferences", "grader_applications"
   add_foreign_key "grader_applications", "users"
+  add_foreign_key "grader_assignments", "grader_applications"
+  add_foreign_key "grader_assignments", "sections"
+  add_foreign_key "grader_requests", "sections"
   add_foreign_key "sections", "courses"
 end

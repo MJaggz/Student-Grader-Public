@@ -1,31 +1,49 @@
 <%# Notifications Page %>
 <h2>Notifications</h2>
-<div class="card">
-<table>
-  <thead>
-    <tr>
-      <th>Notification Type</th>
-      <th>Description</th>
-      <th>Link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if user_signed_in? && current_user.admin? %>
-    <% @users.each do |user| %>
-      <tr>
-        <%# Generate notifications for any oustanding user approvals %>
-        <% if user.approved? %>
-        <% else %>
-        <td> Oustanding User Approval </td>
-        <td> <i><%= user.email %></i> has requested approval for a new <b><%= user.role.capitalize %></b> account.</td>
-        <td><%= link_to "Manage Users", users_path, class: "button module" %></td>
-        <% end %>
-        
-      </tr>
-    <% end %> 
-    <% end %>
 
-  </tbody>
-</table>
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Notification Type</th>
+        <th>Description</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if user_signed_in? && current_user.admin? %>
+        <% @users.each do |user| %>
+          <% unless user.approved? %>
+            <tr>
+              <td>Outstanding User Approval</td>
+              <td>
+                <i><%= user.email %></i> has requested approval for a new
+                <b><%= user.role.capitalize %></b> account.
+              </td>
+              <td>
+                <%= link_to "Manage Users", users_path, class: "button module" %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+
+        <% @grader_requests.each do |grader_request| %>
+          <% unless grader_request.fulfilled? %>
+            <tr>
+              <td>Outstanding Grader Request</td>
+              <td>
+                <i><%= grader_request.requestor_name %></i> has requested
+                <%= grader_request.num_graders_requested %> graders.
+              </td>
+              <td>
+                <%= link_to "Assign Graders", grader_requests_path, class: "button module" %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
 </div>
-<%= link_to "Back", :back, class:"back-link"%>
+
+<%= link_to "Back", :back, class: "back-link" %>
