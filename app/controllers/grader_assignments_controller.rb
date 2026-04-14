@@ -2,7 +2,9 @@ class GraderAssignmentsController < ApplicationController
   def index
     @grader_request = GraderRequest.find(params[:grader_request_id])
     @section = @grader_request.section
-    @grader_assignments = GraderAssignment.where(section_id: @section.id)
+    @grader_assignments = @section.grader_assignments.includes(grader_application: :user)
+    @grader_applications = GraderApplication.includes(:user)
+    @assigned_application_ids = @grader_assignments.pluck(:grader_application_id)
   end
   
   def create
@@ -16,10 +18,10 @@ class GraderAssignmentsController < ApplicationController
 
     if @grader_assignment.save
       update_request_assignment_count(@section)
-      redirect_back fallback_location: grader_request_path(@section.grader_request),
+      redirect_back fallback_location: grader_request_grader_assignments_path(@section.grader_request),
                     notice: "Grader assigned successfully."
     else
-      redirect_back fallback_location: grader_request_path(@section.grader_request),
+      redirect_back fallback_location: grader_request_grader_assignments_path(@section.grader_request),
                     alert: @grader_assignment.errors.full_messages.to_sentence
     end
   end
@@ -32,7 +34,7 @@ class GraderAssignmentsController < ApplicationController
     @grader_assignment.destroy
     update_request_assignment_count(@section)
 
-    redirect_back fallback_location: grader_request_path(@grader_request),
+    redirect_back fallback_location: grader_request_grader_assignments_path(@grader_request),
                   notice: "Grader assignment removed."
   end
 

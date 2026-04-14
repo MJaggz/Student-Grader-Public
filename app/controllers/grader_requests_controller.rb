@@ -4,13 +4,8 @@ class GraderRequestsController < ApplicationController
   end
 
   def show
-    @grader_request = GraderRequest.includes(section: :course).find(params[:id])
-    @section = @grader_request.section
-
-    # Replace this later with your real matching logic
-    @grader_applications = GraderApplication.includes(:user)
-
-    @assigned_application_ids = @section.grader_assignments.pluck(:grader_application_id)
+    @grader_request = GraderRequest.find(params[:id])
+    redirect_to grader_request_grader_assignments_path(@grader_request)
   end
 
   def create

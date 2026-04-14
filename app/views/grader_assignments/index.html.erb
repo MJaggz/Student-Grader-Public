@@ -52,14 +52,14 @@
               <% if @assigned_application_ids.include?(application.id) %>
                 <% assignment = @section.grader_assignments.find_by(grader_application_id: application.id) %>
                 <%= button_to "Remove",
-                      grader_assignment_path(assignment),
+                      grader_request_grader_assignment_path(@grader_request, assignment),
                       method: :delete,
                       class: "button secondary" %>
               <% elsif @grader_request.fulfilled? %>
                 <button type="button" disabled>Full</button>
               <% else %>
                 <%= button_to "Assign",
-                      grader_assignments_path,
+                      grader_request_grader_assignments_path(@grader_request),
                       method: :post,
                       params: {
                         grader_assignment: {
