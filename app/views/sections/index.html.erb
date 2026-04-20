@@ -40,7 +40,11 @@
           <th>Location</th>
           <th>Credit Hours</th>
           <th>Instruction Mode</th>
+          <th>Graders Required</th>
           <th>Grader Request</th>
+          <% if current_user.admin? %>
+            <th>Actions</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -54,6 +58,7 @@
             <td><%= section.location %></td>
             <td><%= section.credit_hours %></td>
             <td><%= section.instruction_mode %></td>
+            <td><%= section.graders_required %></td>
             <td>
               <% if section.grader_request.present? %>
                 <span>Request already submitted</span>
@@ -63,20 +68,20 @@
                 </button>
               <% end %>
             </td>
+            <% if current_user.admin? %>
+              <td>
+                <%= link_to "Edit Requirement", edit_section_path(section), class: "button warning-button" %>
+              </td>
+            <% end %>
           </tr>
 
           <% unless section.grader_request.present? %>
             <dialog id="grader-request-modal-<%= section.id %>">
               <h3>Request grader for Section <%= section.section_number %></h3>
+              <p>This request will use the section requirement of <strong><%= section.graders_required %></strong> grader(s).</p>
 
               <%= form_with model: [section, GraderRequest.new], url: section_grader_request_path(section), local: true do |f| %>
                 <div>
-                  <%= f.label :num_graders_requested, "Number of graders requested" %>
-                  <%= f.number_field :num_graders_requested, min: 1, required: true %>
-                </div>
-
-                <div>
-                  <br/>
                   <%= f.submit "Submit Request" %>
                   <button type="button" onclick="document.getElementById('grader-request-modal-<%= section.id %>').close()">
                     Cancel
@@ -89,4 +94,4 @@
       </tbody>
     </table>
   <% end %>
-</div>q
+</div>

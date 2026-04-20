@@ -1,65 +1,103 @@
 <%# Admin Only - Course Catalog Syncing Page %>
 
 <% if current_user.admin? %>
-<div class="card">
-  <div class="admin-reload-box">
-    <h2>Sync Course Catalog</h2>
-    
-    <%= form_with url: reload_courses_path, method: :post, local: true do |f| %>
-      <div class="form-grid">
+  <div class="card">
+    <div class="admin-reload-box">
+      <h2>Sync Course Catalog</h2>
 
-      <div class= "cat-group">
+      <%= form_with url: reload_courses_path, method: :post, local: true do |f| %>
+        <div class="form-grid">
+          <div class="cat-group">
+            <%# Term Selection - Defaults to Spring 2026 %>
+            <div>
+              <%= f.label :term, "Academic Term", class: "cat-label" %>
+              <%= f.select :term, [
+                    ["Autumn 2026", "1268"], ["Summer 2026", "1264"], ["Spring 2026", "1262"],
+                    ["Autumn 2025", "1258"], ["Summer 2025", "1254"], ["Spring 2025", "1252"],
+                    ["Autumn 2024", "1248"], ["Summer 2024", "1244"], ["Spring 2024", "1242"]
+                  ], { selected: "1262" }, class: "cat-input" %>
+            </div>
 
-        <%# Term Selection - Defaults to Spring 2026 %>
-        <div>
-          <%= f.label :term, "Academic Term", class:"cat-label"%>
-          <%= f.select :term, [
-            ["Autumn 2026", "1268"], ["Summer 2026", "1264"], ["Spring 2026", "1262"],
-            ["Autumn 2025", "1258"], ["Summer 2025", "1254"], ["Spring 2025", "1252"],
-            ["Autumn 2024", "1248"], ["Summer 2024", "1244"], ["Spring 2024", "1242"]
-          ], { selected: "1262" }, class:"cat-input" %>
+            <%# Campus Selection - Defaults to Columbus %>
+            <div class="cat-group">
+              <%= f.label :campus, "Campus", class: "cat-label" %>
+              <%= f.select :campus, [
+                    ["Columbus", "col"], ["Lima", "lma"], ["Mansfield", "mns"],
+                    ["Marion", "mrn"], ["Newark", "nwk"], ["Wooster", "wst"]
+                  ], { selected: "col" }, class: "cat-input" %>
+            </div>
+
+            <%# Academic Career - Defaults to Undergraduate (UGRD) %>
+            <div class="cat-group">
+              <%= f.label :"academic-career", "Academic Career", class: "cat-label" %>
+              <%= f.select :"academic-career", [
+                    ["Undergraduate", "ugrd"], ["Graduate", "grad"]
+                  ], { selected: "ugrd" }, class: "cat-input" %>
+            </div>
+
+            <%# Catalog Number - Defaults to 1xxx %>
+            <div class="cat-group">
+              <%= f.label :"catalog-number", "Catalog Number", class: "cat-label" %>
+              <%= f.select :"catalog-number",
+                    ["1xxx", "2xxx", "3xxx", "4xxx", "5xxx", "6xxx", "7xxx", "8xxx"],
+                    { selected: "1xxx" }, class: "cat-input" %>
+            </div>
+
+            <%# Instruction Mode - Defaults to In Person (P) %>
+            <div class="cat-group">
+              <%= f.label :"instruction-mode", "Instruction Mode", class: "cat-label" %>
+              <%= f.select :"instruction-mode", [
+                    ["In Person", "p"], ["Distance Learning", "dl"],
+                    ["Distance Enhanced", "dh"], ["Hybrid", "hy"]
+                  ], { selected: "p" }, class: "cat-input" %>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <%= f.submit "Update Local Database", class: "button submit-button" %>
+          </div>
         </div>
-
-        <%# Campus Selection - Defaults to Columbus %>
-        <div class="cat-group">
-          <%= f.label :campus, "Campus", class:"cat-label" %>
-          <%= f.select :campus, [
-            ["Columbus", "col"], ["Lima", "lma"], ["Mansfield", "mns"], 
-            ["Marion", "mrn"], ["Newark", "nwk"], ["Wooster", "wst"]
-          ], { selected: "col" }, class: "cat-input"%>
-        </div>
-
-        <%# Academic Career - Defaults to Undergraduate (UGRD) %>
-        <div class= "cat-group">
-          <%= f.label :"academic-career", "Academic Career" , class:"cat-label"%>
-          <%= f.select :"academic-career", [
-            ["Undergraduate", "ugrd"], ["Graduate", "grad"]
-          ], { selected: "ugrd" }, class:"cat-input"%>
-        </div>
-
-        <%# Catalog Number - Defaults to 1xxx %>
-        <div class= "cat-group">
-          <%= f.label :"catalog-number", "Catalog Number", class:"cat-label" %>
-          <%= f.select :"catalog-number", 
-              ["1xxx", "2xxx", "3xxx", "4xxx", "5xxx", "6xxx", "7xxx", "8xxx"], 
-              { selected: "1xxx" }, class:"cat-input" %>
-        </div>
-
-        <%# Instruction Mode - Defaults to In Person (P) %>
-        <div class="cat-group">
-          <%= f.label :"instruction-mode", "Instruction Mode", class:"cat-label" %>
-          <%= f.select :"instruction-mode", [
-            ["In Person", "p"], ["Distance Learning", "dl"], 
-            ["Distance Enhanced", "dh"], ["Hybrid", "hy"]
-          ], { selected: "p" }, class:"cat-input" %>
-        </div>
-
-      </div>
-
-      <div class="form-actions">
-        <%= f.submit "Update Local Database", class: "button submit-button" %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
+
+  <div class="card">
+    <div class="admin-reload-box">
+      <h2>Copy Prior Term Setup</h2>
+      <p>Easily create a new semester by copying courses, section times, and grader requirements from a previous term.</p>
+      <ul>
+        <li>Choose a source term (the semester you want to copy from)</li>
+        <li>Choose a target term (the new semester you’re setting up)</li>
+      </ul>
+      <p>The target term must be empty to avoid overwriting existing data.</p>
+
+      <%= form_with url: copy_term_setup_courses_path, method: :post, local: true do |f| %>
+        <div class="form-grid">
+          <div class="cat-group">
+            <div>
+              <%= f.label :source_term, "Source Term", class: "cat-label" %>
+              <%= f.select :source_term,
+                    options_for_select(@source_term_options, @selected_source_term),
+                    { prompt: "Select a prior term" },
+                    class: "cat-input" %>
+            </div>
+
+            <div class="cat-group">
+              <%= f.label :target_term, "Target Term", class: "cat-label" %>
+              <%= f.select :target_term,
+                    options_for_select(@target_term_options, @selected_target_term),
+                    { prompt: "Select the new term" },
+                    class: "cat-input" %>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <%= f.submit "Copy Term Setup",
+                  class: "button submit-button",
+                  data: { turbo_confirm: "Copy sections and grader request counts into the selected target term?" } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 <% end %>

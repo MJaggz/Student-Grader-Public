@@ -21,6 +21,7 @@ class GraderRequestsController < ApplicationController
     @grader_request.requestor_name = current_user.email
     @grader_request.request_date ||= Time.current
     @grader_request.request_number ||= generate_request_number(@section)
+    @grader_request.num_graders_requested = @section.graders_required
     @grader_request.num_graders_assigned ||= 0
 
     if @grader_request.save
@@ -35,7 +36,7 @@ class GraderRequestsController < ApplicationController
   private
 
   def grader_request_params
-    params.require(:grader_request).permit(:num_graders_requested)
+    {}
   end
 
   def generate_request_number(section)

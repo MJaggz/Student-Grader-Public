@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   post 'courses/reload', to: 'courses#reload', as: :reload_courses
+  post 'courses/copy_term_setup', to: 'courses#copy_term_setup', as: :copy_term_setup_courses
   delete 'courses/destroy_all', to: 'courses#destroy_all', as: :destroy_all_courses
   get 'courses/configuration', to: 'courses#configuration', as: :configuration_courses
 
@@ -16,7 +17,7 @@ Rails.application.routes.draw do
     resources :sections, only: [:index]
   end
 
-  resources :sections, only: [:show, :destroy] do
+  resources :sections, only: [:show, :edit, :update, :destroy] do
     resource :grader_request, only: [:create]
   end
 

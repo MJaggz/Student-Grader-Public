@@ -1,0 +1,20 @@
+<div class="card">
+  <h2>Edit Section Requirement</h2>
+  <p><strong>Course:</strong> <%= @section.course.subject %> <%= @section.course.catalog_number %></p>
+  <p><strong>Section:</strong> <%= @section.section_number %></p>
+  <p><strong>Term:</strong> <%= @section.term %></p>
+</div>
+
+<div class="card">
+  <%= form_with model: @section, local: true do |f| %>
+    <div class="cat-group">
+      <%= f.label :graders_required, "Graders Required", class: "cat-label" %>
+      <%= f.number_field :graders_required, min: 1, required: true, class: "cat-input" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Save Requirement", class: "button" %>
+      <%= link_to "Back to Sections", course_sections_path(@section.course, term: @section.term), class: "button" %>
+    </div>
+  <% end %>
+</div>

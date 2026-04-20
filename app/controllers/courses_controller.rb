@@ -1,7 +1,8 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!
-  before_action :confirm_admin, only: [:destroy, :destroy_all, :reload]
+  before_action :confirm_admin, only: [:configuration, :copy_term_setup, :destroy, :destroy_all, :reload]
   before_action :set_course, only: [:edit, :update, :destroy]
+  before_action :load_term_copy_form_options, only: [:configuration, :copy_term_setup]
   include Pagy::Backend
 
   def index
@@ -36,6 +37,9 @@ class CoursesController < ApplicationController
     @pagy, @courses = pagy(@courses, items: 10)
   end
 
+  def configuration
+  end
+
   def reload
     # Filter out empty strings from the form
     api_params = params.permit(:q, :term, :campus, :"academic-career", :"catalog-number", :"instruction-mode").to_h.compact_blank
@@ -46,6 +50,25 @@ class CoursesController < ApplicationController
       redirect_to courses_path, notice: "Successfully synced #{count} courses from OSU!"
     else
       redirect_to courses_path, alert: "No courses found. Try widening your search filters."
+    end
+  end
+
+  def copy_term_setup
+    @selected_source_term = copy_term_params[:source_term]
+    @selected_target_term = copy_term_params[:target_term]
+
+    result = TermCopyService.new(
+      source_term: @selected_source_term,
+      target_term: @selected_target_term,
+      actor: current_user
+    ).call
+
+    if result.success?
+      redirect_to courses_path(term: result.target_term),
+                  notice: "Copied #{result.sections_copied} sections and #{result.grader_requests_copied} grader requests into #{human_term_label(result.target_term)}."
+    else
+      flash.now[:alert] = result.message
+      render :configuration, status: :unprocessable_entity
     end
   end
 
@@ -93,6 +116,46 @@ def course_params
     :component
   )
 end
+
+  def copy_term_params
+    params.permit(:source_term, :target_term)
+  end
+
+  def load_term_copy_form_options
+    existing_terms = Section.where.not(term: [nil, ""]).distinct.order(term: :desc).pluck(:term)
+    common_terms = %w[1278 1274 1272 1268 1264 1262 1258 1254 1252 1248 1244 1242]
+    target_terms = (existing_terms + common_terms).uniq.sort.reverse
+
+    @source_term_options = existing_terms.map { |term| [copy_term_option_label(term), term] }
+    @target_term_options = target_terms.map { |term| [copy_term_option_label(term), term] }
+  end
+
+  def copy_term_option_label(term)
+    return term if term.blank? || term.length != 4 || term !~ /\A\d{4}\z/
+
+    season = {
+      "2" => "Spring",
+      "4" => "Summer",
+      "8" => "Autumn"
+    }[term[-1]] || "Term"
+    year = 2000 + term[1, 2].to_i
+
+    "#{season} #{year}"
+  end
+
+  def human_term_label(term)
+    return term if term.blank? || term.length != 4 || term !~ /\A\d{4}\z/
+
+    season = {
+      "2" => "Spring",
+      "4" => "Summer",
+      "8" => "Autumn"
+    }[term[-1]] || "Term"
+    year = 2000 + term[1, 2].to_i
+
+    "#{season} #{year} (#{term})"
+  end
+
   def confirm_admin
     redirect_to root_path, alert: "Access denied: Admins only." unless current_user&.admin?
   end
