@@ -27,7 +27,7 @@ class SectionsController < ApplicationController
   def update
     if @section.update(section_params)
       redirect_to course_sections_path(@section.course, term: @section.term),
-                  notice: "Section grader requirement updated."
+                  notice: "Section details updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class SectionsController < ApplicationController
   end
 
   def section_params
-    params.require(:section).permit(:graders_required)
+    params.require(:section).permit(:days, :times, :location, :instruction_mode, :graders_required)
   end
 
   def confirm_admin
