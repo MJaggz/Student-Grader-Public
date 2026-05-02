@@ -1,0 +1,56 @@
+<h2>Assignments List - <%= @user.email %></h2>
+
+<div class="card">
+  <% if @grader_assignments.blank? %>
+    <p>No assignments found.</p>
+  <% else %>
+    <table class="course-table">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Section</th>
+          <th>Term</th>
+          <th>Days</th>
+          <th>Time</th>
+          <th>Location</th>
+          <th>Assigned Date</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @grader_assignments.each do |assignment| %>
+          <% section = assignment.section %>
+          <% course = section.course %>
+
+          <tr>
+            <td>
+              <%= course.subject %>
+              <%= course.catalog_number %> -
+              <%= course.title %>
+            </td>
+            <td><%= section.section_number %></td>
+            <td><%= section.term %></td>
+            <td><%= section.days %></td>
+            <td><%= section.times %></td>
+            <td><%= section.location %></td>
+            <td><%= assignment.assigned_at&.strftime("%b %d, %Y") %></td>
+
+            <td>
+              <% if current_user.admin? %>
+                <%= button_to "Unassign",
+                    grader_assignment_path(assignment),
+                    method: :delete,
+                    data: { turbo_confirm: "Are you sure?" },
+                    class: "button" %>
+              <% end %>
+            </td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<%= link_to "Back", :back, class: "back-link" %>

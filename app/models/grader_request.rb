@@ -1,7 +1,6 @@
 class GraderRequest < ApplicationRecord
   belongs_to :section
-  has_many :grader_assignments, dependent: :destroy
-
+  has_many :grader_assignments, through: :section
 
   validates :request_number, presence: true, uniqueness: true
   validates :requestor_name, presence: true

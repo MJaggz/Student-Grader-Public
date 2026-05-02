@@ -66,6 +66,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_120000) do
 
   create_table "grader_requests", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.boolean "fulfilled"
     t.datetime "fulfilled_date"
     t.integer "num_graders_assigned", default: 0, null: false
     t.integer "num_graders_requested"
@@ -74,8 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_120000) do
     t.string "requestor_name"
     t.integer "section_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["request_number"], name: "index_grader_requests_on_request_number", unique: true
-    t.index ["section_id"], name: "index_grader_requests_on_section_id", unique: true
+    t.index ["section_id"], name: "index_grader_requests_on_section_id"
   end
 
   create_table "sections", force: :cascade do |t|

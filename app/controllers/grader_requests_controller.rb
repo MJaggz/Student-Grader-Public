@@ -1,6 +1,15 @@
 class GraderRequestsController < ApplicationController
+  before_action :require_admin, only: [:destroy]
+
   def index
+    @status = params[:status]
     @grader_requests = GraderRequest.includes(section: :course).order(request_date: :desc)
+
+    if @status == "filled"
+      @grader_requests = @grader_requests.select(&:fulfilled?)
+    elsif @status == "unfulfilled"
+      @grader_requests = @grader_requests.reject(&:fulfilled?)
+    end
   end
 
   def show
@@ -33,7 +42,20 @@ class GraderRequestsController < ApplicationController
     end
   end
 
+  def destroy
+    @grader_request = GraderRequest.find(params[:id])
+    @grader_request.destroy
+
+    redirect_to grader_requests_path, notice: "Request deleted."
+  end
+
   private
+
+  def require_admin
+    unless current_user&.admin?
+      redirect_to grader_requests_path, alert: "Not authorized."
+    end
+  end
 
   def grader_request_params
     {}

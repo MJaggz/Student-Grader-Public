@@ -13,19 +13,30 @@ Rails.application.routes.draw do
   delete 'courses/destroy_all', to: 'courses#destroy_all', as: :destroy_all_courses
   get 'courses/configuration', to: 'courses#configuration', as: :configuration_courses
 
+  # ✅ Grader Requests (single correct block)
+  resources :grader_requests, only: [:index, :show, :destroy] do
+    resources :grader_assignments, only: [:index, :create, :destroy]
+  end
+
+  # Courses and sections
   resources :courses do
     resources :sections, only: [:index]
   end
 
+  # Creating grader requests from sections
   resources :sections, only: [:show, :edit, :update, :destroy] do
     resource :grader_request, only: [:create]
   end
 
-  resources :grader_requests, only: [:index, :show] do
-    resources :grader_assignments, only: [:index, :create, :destroy]
-  end
+  get "assignments_list", to: "grader_assignments#assignments_list"
+  delete "grader_assignments/:id", to: "grader_assignments#destroy", as: :grader_assignment
 
+  # Grader application
   resource :grader_application, only: [:show, :new, :create, :edit, :update]
+
+  # Notifications
   get "notifications", to: "notifications#index"
+
+  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 end

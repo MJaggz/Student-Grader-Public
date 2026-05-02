@@ -3,6 +3,20 @@
 <h2>All Grader Requests</h2>
 
 <div class="card">
+  <%= form_with url: grader_requests_path, method: :get, local: true do %>
+    <label for="status">Filter by request status:</label>
+
+    <%= select_tag :status,
+        options_for_select([
+          ["All", ""],
+          ["Filled", "filled"],
+          ["Unfulfilled", "unfulfilled"]
+        ], @status),
+        onchange: "this.form.submit();" %>
+  <% end %>
+</div>
+
+<div class="card">
   <% if @grader_requests.blank? %>
     <p>No grader requests found.</p>
   <% else %>
@@ -17,7 +31,8 @@
           <th>Section</th>
           <th># Requested</th>
           <th># Assigned</th>
-          <th>Assign</th>
+          <th>Actions</th>
+          <th></th> 
         </tr>
       </thead>
 
@@ -28,18 +43,36 @@
             <td><%= grader_request.requestor_name %></td>
             <td><%= grader_request.fulfilled_date&.strftime("%b %d, %Y") %></td>
             <td><%= grader_request.request_number %></td>
+
             <td>
               <%= grader_request.section.course.subject %>
               <%= grader_request.section.course.catalog_number %>
             </td>
+
             <td><%= grader_request.section.section_number %></td>
             <td><%= grader_request.num_graders_requested %></td>
             <td><%= grader_request.num_graders_assigned %></td>
+
+            <!-- Assign column -->
             <td>
-              <%= link_to "Assign Graders",
-                  grader_request_grader_assignments_path(grader_request),
-                  class: "button module" %>
+              <% unless grader_request.fulfilled? %>
+                <%= link_to "Assign",
+                    grader_request_grader_assignments_path(grader_request),
+                    class: "button module" %>
+              <% end %>
             </td>
+
+            <!-- Delete column -->
+            <td>
+              <% if current_user&.admin? %>
+                <%= button_to "Delete",
+                    grader_request_path(grader_request),
+                    method: :delete,
+                    data: { confirm: "Are you sure?" },
+                    class: "button" %>
+              <% end %>
+            </td>
+
           </tr>
         <% end %>
       </tbody>

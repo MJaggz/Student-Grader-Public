@@ -1,35 +1,61 @@
 <%# Catalog of Registered Users - Admin Only %>
-<h2>All Registered Users</h2>
-<div class="card">
-<table>
-  <thead>
-    <tr>
-      <th>Email (Name.#)</th>
-      <th>Role</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.email %></td>
-        <td><%= user.role.capitalize %></td>
-        <% if current_user.admin? %>
-        <% if user.approved? %>
-          <td><span style="color: green;">Approved</span></td>
-        <% else %>
-          <td><%= button_to "Approve", approve_user_path(user), method: :patch, data: { turbo_confirm: "Are you sure?" }%></td>
-        <% end %>
-        <% if user != current_user %>
-              <td><%= button_to "Delete User", user_path(user), method: :delete, data: { turbo_confirm: "Are you sure?" }%></td>
-        <% end %>
-        <% end %>
-      </tr>
-       
-    <% end %>
 
-  </tbody>
-</table>
+<h2>All Registered Users</h2>
+
+<div class="card">
+  <table class="course-table">
+    <thead>
+      <tr>
+        <th>Email (Name.#)</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.email %></td>
+          <td><%= user.role.capitalize %></td>
+
+          <% if current_user.admin? %>
+            <% if user.approved? %>
+              <td><span style="color: green;">Approved</span></td>
+            <% else %>
+              <td>
+                <%= button_to "Approve",
+                    approve_user_path(user),
+                    method: :patch,
+                    data: { turbo_confirm: "Are you sure?" },
+                    class: "button" %>
+              </td>
+            <% end %>
+
+            <td>
+              <% if user != current_user %>
+                <%= button_to "Delete User",
+                    user_path(user),
+                    method: :delete,
+                    data: { turbo_confirm: "Are you sure?" },
+                    class: "button" %>
+              <% end %>
+            </td>
+
+            <td>
+              <% if user.student? %>
+                <%= link_to "View Assignments",
+                    assignments_list_path(user_id: user.id),
+                    class: "button" %>
+              <% end %>
+            </td>
+          <% end %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
-<%= link_to "Back", :back, class:"back-link" %>
+
+<%= link_to "Back", :back, class: "back-link" %>
