@@ -1,6 +1,6 @@
-# Project 2 - Rails Project to Manage Student Graders
+# Project 3 - Rails Project to Manage Student Graders
 
-This is a Ruby on Rails web application for managing CSE course and section data for student grader assignments. The system is designed to streamline the process of collecting course information, supporting user authentication, and preparing the application for future grader matching functionality.
+This is a Ruby on Rails web application for managing CSE student grader applications, instructor recommendations, course sections, and grader assignments. The system builds on the Project 2 base by expanding the application into a workflow tool for matching qualified undergraduate students with CSE course sections that need graders.
 
 —
 ##  Development Team
@@ -21,15 +21,20 @@ This project implements the foundation of a student grader management system usi
 
 This application includes:
 
-- User authentication with login, logout, and registration
-- Role-based access for Students, Instructors, and Admins
-- Admin approval workflow for instructor and Admin accounts
-- OSU email validation using the name.#@osu.edu format
-- A default Admin account
-- Database storage for course and section data
-- API integration with the OSU course catalog for CSE classes
-- Admin only functionality to reload course catalog data into the database
-- A shared course catalog view accessible to Students, Instructors, and Admins
+-User authentication with login, logout, and registration
+-Role-based access for Students, Instructors, and Admins
+-Admin approval workflow for Instructor and Admin accounts
+-OSU email validation using the name.#@osu.edu format
+-A default Admin account for testing and setup
+-Database storage for CSE course and section data
+-API integration with the OSU course catalog for CSE classes
+-Admin-only functionality to reload course catalog data into the database
+-Admin functionality to copy course, section, and grader requirement setup from a prior term
+-A shared course catalog view accessible to Students, Instructors, and Admins
+-Student grader application submission and update support
+-Student availability tracking for courses that require specific section or lab times
+-Instructor grader request and recommendation support
+-Admin tools for reviewing users, courses, sections, applications, and grader-related information
 
 ---
 
@@ -48,6 +53,9 @@ This application includes:
 GRADER_MANAGER/
 │
 ├── app/
+|   |── assets/
+│   │   ├── images/
+|   |   └── stylesheets/
 │   ├── controllers/
 │   │   ├── application_controller.rb
 │   │   ├── courses_controller.rb
@@ -55,6 +63,16 @@ GRADER_MANAGER/
 │   │   ├── notifications_controller.rb
 │   │   ├── sections_controller.rb
 │   │   └── users_controller.rb
+|   |── helpers/
+│   │   ├── application_helper.rb
+|   |   └── notifiactions_helper.rb
+|   |── javascript/
+│   │   ├── applications.ks
+|   |   └── grader_application.js
+|   |── jobs/
+|   |   └── application_jobs.rb
+|   |── mailers/
+|   |   └── application_mailer.rb
 │   │
 │   ├── models/
 │   │   ├── application_record.rb
@@ -149,7 +167,7 @@ Below are examples of the application's user interface and key functionality.
 5. Admin Dashboard where after logging in as an Admin, the user can access administrative functionality. ![Admin Dashboard](<app/assets/images/admin dashboard.png>)
 
 
-6. User administration page where Admins can see the status of all the users along with their approval status.![User Administration Page](<app/assets/images/user administration.png>)
+6. User administration page where Admins can see the status of all the users along with their approval status.![User Administration Page](<app/assets/images/Registered Users - Admin.png>)
 
 
 7. Reload catalog page where only Admins can reload course data directly from the OSU course API. ![Reload Catalog Page](<app/assets/images/reloading catalog.png>)
@@ -163,6 +181,23 @@ Below are examples of the application's user interface and key functionality.
 
 10. Editing a course section which only Admins have the abilty to modify course parameters when necessary. ![Editing a course page](<app/assets/images/editing.png>)
 
+11. Student Dashboard
+Shows the dashboard for a logged-in Student account. The student has access to student-specific modules such as viewing courses, submitting a grader application, and viewing assignments. ![Student Dashboard](<app/assets/images/New Student Dashboard.png>)
+
+12. Submit Grader Application Page
+Shows the form students use to submit a grader application. The form collects basic information, qualified courses, and schedule availability. ![Submit Grader Application](<app/assets/images/Grader Application.png>)
+
+13. Grader Application Status Page
+Shows the student’s submitted grader application status, including contact details, courses qualified to grade, and schedule availability.![Grader Application Status](<app/assets/images/Grader application submitted status.png>)
+
+14. Copy Prior Term Setup Page
+Shows the Admin tool that allows course, section time, and grader requirement information to be copied from a previous term into a new term.![Copy Prior Term Setup](<app/assets/images/Prior Team Setup.png>)
+
+15. Admin Notifications for User Approval
+Your old list already has a general Notifications Center, but this new screenshot specifically shows an Admin notification for approving a new Instructor account. You can either replace #3 with a more specific description or add this as a new screenshot.16. ![Admin Notifications](<app/assets/images/Admin Notifications.png>)
+
+16. Instructor Dashboard
+Shows the dashboard for a logged-in Instructor account. The instructor can view courses and request a grader. ![Instructor Dashboard](<app/assets/images/Instructor Dashboard New.png>)
 
 
 ---
@@ -191,3 +226,9 @@ Ensure that the email used follows the required format:
 
 - name.#@osu.edu
 If testing with the default admin account, verify that the seed file was executed.
+
+4. Catalog data does not appear
+If course or section data does not appear, log in as an Admin and use the reload catalog feature. Also confirm that the OSU API is reachable and that the database was migrated correctly.
+
+5. Permission issues
+If a user cannot access Instructor or Admin pages, check whether the account has been approved by an Admin. Elevated roles require approval before access is granted.
