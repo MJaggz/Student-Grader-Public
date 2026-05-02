@@ -21,20 +21,20 @@ This project implements the foundation of a student grader management system usi
 
 This application includes:
 
--User authentication with login, logout, and registration
--Role-based access for Students, Instructors, and Admins
--Admin approval workflow for Instructor and Admin accounts
--OSU email validation using the name.#@osu.edu format
--A default Admin account for testing and setup
--Database storage for CSE course and section data
--API integration with the OSU course catalog for CSE classes
--Admin-only functionality to reload course catalog data into the database
--Admin functionality to copy course, section, and grader requirement setup from a prior term
--A shared course catalog view accessible to Students, Instructors, and Admins
--Student grader application submission and update support
--Student availability tracking for courses that require specific section or lab times
--Instructor grader request and recommendation support
--Admin tools for reviewing users, courses, sections, applications, and grader-related information
+- User authentication with login, logout, and registration
+- Role-based access for Students, Instructors, and Admins
+- Admin approval workflow for Instructor and Admin accounts
+- OSU email validation using the name.#@osu.edu format
+- A default Admin account for testing and setup
+- Database storage for CSE course and section data
+- API integration with the OSU course catalog for CSE classes
+- Admin-only functionality to reload course catalog data into the database
+- Admin functionality to copy course, section, and grader requirement setup from a prior term
+- A shared course catalog view accessible to Students, Instructors, and Admins
+- Student grader application submission and update support
+- Student availability tracking for courses that require specific section or lab times
+- Instructor grader request and recommendation support
+- Admin tools for reviewing users, courses, sections, applications, and grader-related information
 
 ---
 
