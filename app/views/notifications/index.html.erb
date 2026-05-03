@@ -42,6 +42,17 @@
           <% end %>
         <% end %>
       <% end %>
+      <% if user_signed_in? && current_user.student? %>
+        <% if Recommendation.exists?(last_name_id: current_user.email.delete_suffix("@osu.edu")) %>
+          <tr>
+              <td>New Recommendation</td>
+              <td>You've been recommended for a new grader position!</td>
+              <td>
+                <%= link_to "Recommendations For Me", by_last_name_id_recommendations_path, class: "button module" %>
+              </td>
+            </tr>
+        <% end %>
+      <% end %>
     </tbody>
   </table>
 </div>

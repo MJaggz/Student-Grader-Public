@@ -24,10 +24,7 @@
           <td><%= recommendation.course %></td>
           <td><%= recommendation.section %></td>
           <td><%= recommendation.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
-          <td>
-            <%= recommendation.status ? "Approved" : "Pending" %>
-            <%= link_to "Approve", root_path, class: "button module" %>
-          </td>
+          <td><%= recommendation.status ? "Approved" : "Pending" %></td>
         </tr>
       <% end %>
     </tbody>

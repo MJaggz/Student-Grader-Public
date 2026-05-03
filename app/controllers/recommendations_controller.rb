@@ -2,6 +2,17 @@ class RecommendationsController < ApplicationController
   def index
     @recommendations = Recommendation.all
   end
+
+  def by_last_name_id
+    @user_email = current_user.email
+    @last_name_id = @user_email.delete_suffix("@osu.edu")
+
+    @recommendations = if @last_name_id.present?
+                        Recommendation.where(last_name_id: @last_name_id)
+                      else
+                        Recommendation.none
+                      end
+  end
   
   def show
     @recommendation = Recommendation.find(params[:id])

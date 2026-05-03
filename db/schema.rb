@@ -86,7 +86,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_02_233912) do
     t.string "last_name_id"
     t.string "recommended_by"
     t.string "section"
-    t.boolean "status"
+    t.boolean "status", default: false, null: false
     t.datetime "updated_at", null: false
   end
 
