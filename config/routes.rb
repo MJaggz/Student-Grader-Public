@@ -37,6 +37,9 @@ Rails.application.routes.draw do
   # Notifications
   get "notifications", to: "notifications#index"
 
+  # Recommendation Form for Instructors
+  resources :recommendations
+
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 end

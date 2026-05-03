@@ -1,0 +1,66 @@
+<h1>New Recommendation</h1>
+
+<% if @recommendation.errors.any? %>
+  <div style="color: red;">
+    <h2><%= pluralize(@recommendation.errors.count, "error") %> prevented this recommendation from being saved:</h2>
+
+    <ul>
+      <% @recommendation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @recommendation, local: true do |form| %>
+  <div class="card">
+    <h3>Your Information</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <%= form.label :recommended_by, "Recommended By (First Name + Last Name)" %><br>
+        <%= form.text_field :recommended_by, class: "input-field" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Student Information</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <%= form.label :first_name, "First Name" %><br>
+        <%= form.text_field :first_name, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :last_name, "Last Name" %><br>
+        <%= form.text_field :last_name, class: "input-field" %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :last_name_id, "Last Name ID" %><br>
+        <%= form.text_field :last_name_id, class: "input-field"  %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Course Information</h3>
+    <div class="form-grid">
+      <div class="form-group">
+      <%= form.label :course, "Course (Dept. + Id Ex: CSE 2111)" %><br>
+        <%= form.text_field :course, class: "input-field" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :section, "Section Number" %><br>
+        <%= form.text_field :section, class: "input-field" %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="form-actions">
+    <%= form.submit "Recommend Student", class: "button submit-button", style: "width: 100%; font-size: 1.1rem; padding: 12px;" %>
+  </div>
+<% end %>

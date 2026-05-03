@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_20_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_02_233912) do
   create_table "availabilities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "day"
@@ -66,7 +66,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_120000) do
 
   create_table "grader_requests", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.boolean "fulfilled"
     t.datetime "fulfilled_date"
     t.integer "num_graders_assigned", default: 0, null: false
     t.integer "num_graders_requested"
@@ -75,7 +74,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_120000) do
     t.string "requestor_name"
     t.integer "section_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["section_id"], name: "index_grader_requests_on_section_id"
+    t.index ["request_number"], name: "index_grader_requests_on_request_number", unique: true
+    t.index ["section_id"], name: "index_grader_requests_on_section_id", unique: true
+  end
+
+  create_table "recommendations", force: :cascade do |t|
+    t.string "course"
+    t.datetime "created_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "last_name_id"
+    t.string "recommended_by"
+    t.string "section"
+    t.boolean "status"
+    t.datetime "updated_at", null: false
   end
 
   create_table "sections", force: :cascade do |t|

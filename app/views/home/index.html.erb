@@ -87,6 +87,7 @@
         <%= link_to "View Grader Requests", grader_requests_path, class: "button module" %>
       <% elsif current_user.instructor? %>
         <%= link_to "View Courses/Request Grader", courses_path, class: "button module" %>
+        <%= link_to "Recommend Student", new_recommendation_path, class: "button module" %>
       <% else %>
         <%= link_to "View Courses", courses_path, class: "button module" %>
         <%= link_to "Submit Grader Application", grader_application_path, class: "button module" %> 
