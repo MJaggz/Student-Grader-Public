@@ -26,7 +26,11 @@
           <td><%= recommendation.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
           <td>
             <%= recommendation.status ? "Approved" : "Pending" %>
-            <%= link_to "Approve", root_path, class: "button module" %>
+            <% if !recommendation.status %>
+              <%= button_to "Approve", change_status_recommendation_path(recommendation), method: :patch, data: {
+                turbo_confirm: "Are you sure you want to approve this recommendation?"
+              }, class: "button module" %>
+            <% end %>
           </td>
         </tr>
       <% end %>

@@ -38,6 +38,16 @@ class RecommendationsController < ApplicationController
     end
   end
 
+  def change_status
+    @recommendation = Recommendation.find(params[:id])
+
+    if @recommendation.update(status: true)
+      redirect_to recommendations_path, notice: "Recommendation status was updated successfully."
+    else
+      redirect_to recommendations_path, alert: "Could not update recommendation status."
+    end
+  end
+
   private
 
   def recommendation_params

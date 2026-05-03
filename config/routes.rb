@@ -42,6 +42,9 @@ Rails.application.routes.draw do
     collection do
       get :by_last_name_id
     end
+    member do
+      patch :change_status
+    end
   end
 
   # Health check
