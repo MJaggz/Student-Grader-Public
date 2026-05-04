@@ -24,7 +24,8 @@ The original work was completed as a collaborative academic group project.
 ## My Contributions (Mohamed Jama)
 I served as the Project Manager for Project 2, coordinating team tasks and managing GitHub issues. I contributed to features such as course filtering, role-based access control, and input validation.
 
-For Project 3, I focused on semester-based functionality, including managing course and section data by term, tracking meeting times, preserving historical records, and implementing features like copying prior semester setups and managing grader requirements.
+For Project 3, I focused on semester-based functionality, including managing course and section data by term, tracking meeting times, preserving historical records, and implementing features like copying prior semester setup and managing grader requirements.
+
 ---
 
 ##  Overview
